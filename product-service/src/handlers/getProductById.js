@@ -1,12 +1,11 @@
 import {ProductsService} from "../products.service";
 import productModel from '../../products.json';
 import {NotFoundError} from "../NotFoundError";
+import {setHeaders} from "../utils/setHeaders";
 
 export const getProductById = async event => {
     const productService = new ProductsService(productModel);
     const {pathParameters: {id}, headers} = event;
-
-    console.log('getProductById header', headers);
 
     let response;
     try {
@@ -31,11 +30,7 @@ export const getProductById = async event => {
 
     return {
         ...response,
-        headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-        }
+        headers: setHeaders()
     }
 };
 

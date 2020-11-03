@@ -1,5 +1,6 @@
 import {ProductsService} from "../products.service";
 import productModel from '../../products.json';
+import {setHeaders} from "../utils/setHeaders";
 
 export const getProductsList = async () => {
     const productService = new ProductsService(productModel);
@@ -7,11 +8,7 @@ export const getProductsList = async () => {
 
     return {
         statusCode: 200,
-        headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-        },
+        headers: setHeaders(),
         body: JSON.stringify(products)
     }
 }
