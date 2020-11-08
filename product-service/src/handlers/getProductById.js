@@ -8,19 +8,18 @@ export const getProductById = async event => {
 
     let response;
     try {
-        const product = await db.query({
-                text: `select s.count, p.price, p.title, p.description
+        const { rows } = await db.query({
+                text: `select p.id, p.price, p.title, p.description, s.count
                        from products as p
                                 join stocks as s on p.id = s.product_id
                        where p.id = $1`,
                 values: [id]
             }
         );
-        console.log('product by id', product)
 
         response = {
             statusCode: 200,
-            body: JSON.stringify(product),
+            body: JSON.stringify(rows[0]),
         };
     } catch (error) {
         if (error instanceof NotFoundError) {
