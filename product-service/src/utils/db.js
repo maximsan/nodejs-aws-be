@@ -1,4 +1,4 @@
-import {Client} from 'pga   ';
+import {Client} from 'pg';
 
 const {DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USERNAME} = process.env;
 
