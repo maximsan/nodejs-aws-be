@@ -1,8 +1,7 @@
 create table stocks
 (
-    id uuid primary key default uuid_generate_v4(),
+    product_id uuid primary key,
     count integer,
-    product_id uuid,
     foreign key (product_id) references products (id)
 );
 
