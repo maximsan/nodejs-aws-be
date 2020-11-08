@@ -1,8 +1,11 @@
 import {setHeaders} from "../utils/setHeaders";
 import {runDB} from "../utils/db";
+import {errorHandler} from "../utils/errorHandler";
 
-export const getProductsList = async () => {
+export const getProductsList = async event => {
     const db = await runDB();
+
+    console.log(`event: ${JSON.stringify(event)}`);
 
     try {
         const {rows: products} = await db.query(`select p.id, p.price, p.title, p.description, s.count 
@@ -16,10 +19,7 @@ export const getProductsList = async () => {
 
     } catch (error) {
         console.error(`Error during db scripts executing - ${error}`);
-        return {
-            statusCode: error.code,
-            message: error.message
-        }
+        errorHandler(error);
     } finally {
         db.end();
     }

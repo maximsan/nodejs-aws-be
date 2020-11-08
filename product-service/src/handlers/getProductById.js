@@ -4,8 +4,11 @@ import {errorHandler} from "../utils/errorHandler";
 
 export const getProductById = async event => {
     const {pathParameters: {id}} = event;
-    const db = await runDB();
 
+    console.log(`event: ${JSON.stringify(event)}`);
+    console.log(`id: ${JSON.stringify(id)}`);
+
+    const db = await runDB();
     try {
         const { rows } = await db.query({
                 text: `select p.id, p.price, p.title, p.description, s.count
