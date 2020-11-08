@@ -9,7 +9,7 @@ export const errorHandler = (error) => {
         }
     }
     return {
-        statusCode: error.code,
+        statusCode: 500,
         message: error.message
     }
 }
