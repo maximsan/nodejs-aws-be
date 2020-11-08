@@ -8,9 +8,17 @@ provider:
   stage: dev
   region: eu-west-1
 
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_DATABASE: ${env:DB_DATABASE}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-dotenv-plugin
 
 functions:
   getProductsList:
@@ -25,11 +33,4 @@ functions:
       - http:
           path: products/{id}
           method: get
-
-environment:
-  DB_HOST: rss-node-db.clgzczht8ong.eu-west-1.rds.amazonaws.com
-  DB_PORT: 5432
-  DB_DATABASE: shopdb
-  DB_USERNAME: postgres
-  DB_PASSWORD: kDncP4uDzAblCzDKCwvd
 

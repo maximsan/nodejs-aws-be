@@ -1,24 +1,21 @@
 import {Client} from 'pg';
-
-const {DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USERNAME} = process.env;
+import {DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USERNAME} from '../config';
 
 const options = {
-    database: DB_DATABASE,
     host: DB_HOST,
     port: DB_PORT,
+    user: DB_USERNAME,
     password: DB_PASSWORD,
-    username: DB_USERNAME
+    database: DB_DATABASE,
+    ssl: {
+        rejectUnauthorized: false // to avoid warring in this example
+    },
+    connectionTimeoutMillis: 5000 // time in millisecond for termination of the database query
 }
 
 export const runDB = async () => {
     const client = new Client(options);
-    try {
-        await client.connect();
-    } catch (e) {
-        console.error(`Error during db connection establishing - ${e}`)
-    } finally {
-        client.end();
-    }
+    await client.connect();
 
     return client;
 }

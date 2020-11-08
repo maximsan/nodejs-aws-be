@@ -4,7 +4,7 @@ import {runDB} from "../utils/db";
 
 export const getProductById = async event => {
     const {pathParameters: {id}} = event;
-    const db = runDB();
+    const db = await runDB();
 
     let response;
     try {
@@ -16,6 +16,7 @@ export const getProductById = async event => {
                 values: [id]
             }
         );
+        console.log('product by id', product)
 
         response = {
             statusCode: 200,
@@ -33,6 +34,8 @@ export const getProductById = async event => {
                 message: error.message
             }
         }
+    } finally {
+        db.end();
     }
 
     return {
