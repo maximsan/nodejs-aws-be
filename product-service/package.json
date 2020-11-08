@@ -24,5 +24,8 @@
   },
   "keywords": [],
   "author": "Maxim Shchutsky <maximuzz@yandex.ru>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^8.4.2"
+  }
 }

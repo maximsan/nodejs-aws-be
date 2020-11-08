@@ -26,3 +26,10 @@ functions:
           path: products/{id}
           method: get
 
+environment:
+  DB_HOST: rss-node-db.clgzczht8ong.eu-west-1.rds.amazonaws.com
+  DB_PORT: 5432
+  DB_DATABASE: shopdb
+  DB_USERNAME: postgres
+  DB_PASSWORD: kDncP4uDzAblCzDKCwvd
+
