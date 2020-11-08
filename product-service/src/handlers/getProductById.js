@@ -1,12 +1,11 @@
-import {NotFoundError} from "../NotFoundError";
 import {setHeaders} from "../utils/setHeaders";
 import {runDB} from "../utils/db";
+import {errorHandler} from "../utils/errorHandler";
 
 export const getProductById = async event => {
     const {pathParameters: {id}} = event;
     const db = await runDB();
 
-    let response;
     try {
         const { rows } = await db.query({
                 text: `select p.id, p.price, p.title, p.description, s.count
@@ -17,29 +16,15 @@ export const getProductById = async event => {
             }
         );
 
-        response = {
+        return {
             statusCode: 200,
             body: JSON.stringify(rows[0]),
-        };
-    } catch (error) {
-        if (error instanceof NotFoundError) {
-            response = {
-                statusCode: 404,
-                message: error.message,
-            }
-        } else {
-            response = {
-                statusCode: error.code,
-                message: error.message
-            }
+            headers: setHeaders()
         }
+    } catch (error) {
+        return errorHandler(error);
     } finally {
         db.end();
-    }
-
-    return {
-        ...response,
-        headers: setHeaders()
     }
 };
 

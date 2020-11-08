@@ -33,4 +33,10 @@ functions:
       - http:
           path: products/{id}
           method: get
+  createProduct:
+    handler: handler.createProduct
+    events:
+      - http:
+          path: products
+          method: post
 
