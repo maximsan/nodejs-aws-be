@@ -27,16 +27,19 @@ functions:
       - http:
           path: products
           method: get
+          cors: true
   getProductById:
     handler: handler.getProductById
     events:
       - http:
           path: products/{id}
           method: get
+          cors: true
   createProduct:
     handler: handler.createProduct
     events:
       - http:
           path: products
           method: post
+          cors: true
 
