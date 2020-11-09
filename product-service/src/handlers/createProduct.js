@@ -1,16 +1,23 @@
 import {runDB} from "../utils/db";
 import {errorHandler} from "../utils/errorHandler";
-import {setHeaders} from "../utils/setHeaders";
+import {productSchema} from "../utils/product.validation.schema";
+import {validate} from "../utils/validate";
+import {createResponse} from "../utils/createResponse";
 
-export const createProduct = async event => {
+export const createProduct = async (event) => {
     const {body} = event;
 
     console.log(`event: ${JSON.stringify(event)}`);
     console.log(`body: ${JSON.stringify(body)}`);
 
     const db = await runDB();
+    const deserializedBody = JSON.parse(body);
+
     try {
-        const {title, description, price, count} = JSON.parse(body);
+        validate(productSchema, deserializedBody)
+
+        const {title, description, price, count} = deserializedBody;
+
         const {rows: products} = await db.query({
             text: `insert into products (title, description, price)
                    values ($1, $2, $3)
@@ -26,10 +33,7 @@ export const createProduct = async event => {
             values: [count, products[0].id]
         })
 
-        return {
-            statusCode: 201,
-            headers: setHeaders(),
-        }
+        return createResponse(201);
     } catch (error) {
         return errorHandler(error);
     } finally {

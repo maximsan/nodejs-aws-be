@@ -1,6 +1,6 @@
-import {setHeaders} from "../utils/setHeaders";
 import {runDB} from "../utils/db";
 import {errorHandler} from "../utils/errorHandler";
+import {createResponse} from "../utils/createResponse";
 
 export const getProductById = async event => {
     const {pathParameters: {id}} = event;
@@ -10,7 +10,7 @@ export const getProductById = async event => {
 
     const db = await runDB();
     try {
-        const { rows } = await db.query({
+        const {rows} = await db.query({
                 text: `select p.id, p.price, p.title, p.description, s.count
                        from products as p
                                 join stocks as s on p.id = s.product_id
@@ -19,11 +19,11 @@ export const getProductById = async event => {
             }
         );
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify(rows[0]),
-            headers: setHeaders()
+        if (rows && rows[0]) {
+            return createResponse(200, rows[0]);
         }
+
+        return createResponse(404, `Product not found by id ${id}`);
     } catch (error) {
         return errorHandler(error);
     } finally {
