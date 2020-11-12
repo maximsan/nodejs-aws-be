@@ -18,11 +18,17 @@
     "babel-preset-env": "^1.6.0",
     "jest": "^26.6.1",
     "lambda-tester": "^4.0.1",
+    "serverless-dotenv-plugin": "^3.1.0",
     "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.3.1",
     "webpack": "^4.35.2"
   },
   "keywords": [],
   "author": "Maxim Shchutsky <maximuzz@yandex.ru>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "joi": "^17.3.0",
+    "pg": "^8.4.2"
+  }
 }

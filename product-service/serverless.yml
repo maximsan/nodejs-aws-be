@@ -8,9 +8,17 @@ provider:
   stage: dev
   region: eu-west-1
 
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_DATABASE: ${env:DB_DATABASE}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-dotenv-plugin
 
 functions:
   getProductsList:
@@ -19,10 +27,19 @@ functions:
       - http:
           path: products
           method: get
+          cors: true
   getProductById:
     handler: handler.getProductById
     events:
       - http:
           path: products/{id}
           method: get
+          cors: true
+  createProduct:
+    handler: handler.createProduct
+    events:
+      - http:
+          path: products
+          method: post
+          cors: true
 
