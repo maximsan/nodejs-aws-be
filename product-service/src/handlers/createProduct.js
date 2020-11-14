@@ -1,8 +1,8 @@
 import {runDB} from "../utils/db";
-import {errorHandler} from "../utils/errorHandler";
+import {errorHandler} from "../../../shared/errorHandler";
 import {productSchema} from "../utils/product.validation.schema";
 import {validate} from "../utils/validate";
-import {createResponse} from "../utils/createResponse";
+import {createResponse} from "../../../shared/createResponse";
 
 export const createProduct = async (event) => {
     const {body} = event;

@@ -1,11 +1,11 @@
 import {runDB} from "../utils/db";
-import {errorHandler} from "../utils/errorHandler";
-import {createResponse} from "../utils/createResponse";
+import {errorHandler} from "../../../shared/errorHandler";
+import {createResponse} from "../../../shared/createResponse";
 
 export const getProductsList = async event => {
-    const db = await runDB();
-
     console.log(`event: ${JSON.stringify(event)}`);
+
+    const db = await runDB();
 
     try {
         const {rows: products} = await db.query(`select p.id, p.price, p.title, p.description, s.count 

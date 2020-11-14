@@ -1,6 +1,6 @@
 import {runDB} from "../utils/db";
-import {errorHandler} from "../utils/errorHandler";
-import {createResponse} from "../utils/createResponse";
+import {errorHandler} from "../../../shared/errorHandler";
+import {createResponse} from "../../../shared/createResponse";
 
 export const getProductById = async event => {
     const {pathParameters: {id}} = event;

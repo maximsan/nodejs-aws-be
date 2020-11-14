@@ -1,0 +1,4 @@
+GET {{url}}/products/530f370a-4e15-4e69-a9ab-35ccb7e909bf
+
+
+#serverless invoke local -f getProductById -d '{"pathParameters":{"id":"530f370a-4e15-4e69-a9ab-35ccb7e909bf"}}'
