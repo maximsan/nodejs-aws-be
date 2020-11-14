@@ -1,0 +1,18 @@
+service: import-service
+
+frameworkVersion: '2'
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  importProductsFile:
+    handler: handler.importProductsFile
+    events:
+      - http:
+          path: import
+          method: get
