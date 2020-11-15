@@ -1,4 +1,4 @@
-import {NotFoundError} from "../../shared/NotFoundError";
+import {NotFoundError} from "../error/NotFoundError";
 
 export class ProductsService  {
     constructor(model) {

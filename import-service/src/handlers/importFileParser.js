@@ -2,11 +2,11 @@ import middy from '@middy/core';
 import {createS3} from "./createS3";
 import csv from 'csv-parser';
 import {BUCKET} from "../config";
-import {errorHandler} from "../../../shared/errorHandler";
-import {createResponse} from "../../../shared/createResponse";
 import {StatusCodes} from "http-status-codes";
 import {promisify} from 'util'
 import {pipeline, Writable} from 'stream'
+import {createResponse} from "../../error/createResponse";
+import {errorHandler} from "../../error/errorHandler";
 
 const promisifiedPipeline = promisify(pipeline);
 
