@@ -1,18 +1,10 @@
-import {S3} from 'aws-sdk'
 import {createResponse} from "../../../shared/createResponse";
 import {errorHandler} from "../../../shared/errorHandler";
 import {StatusCodes} from "http-status-codes";
 import middy from '@middy/core';
 import cors from "@middy/http-cors";
-
-const s3params = {
-    region: 'eu-west-1'
-}
-const bucket = 'nodejs-aws-be-upload'
-
-const createS3 = () => {
-    return new S3(s3params);
-}
+import {createS3} from "./createS3";
+import {BUCKET} from "../config";
 
 export const importProductsFile = middy(async (event) => {
     console.log(`queryStringParameters: ${JSON.stringify(event.queryStringParameters)}`);
@@ -25,7 +17,7 @@ export const importProductsFile = middy(async (event) => {
     const filePath = `uploaded/${fileName}`;
 
     const bucketParams = {
-        Bucket: bucket,
+        Bucket: BUCKET,
         Key: filePath,
         ContentType: 'text/csv'
     }
