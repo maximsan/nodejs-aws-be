@@ -3,8 +3,11 @@ import {errorHandler} from "../../../shared/errorHandler";
 import {productSchema} from "../utils/product.validation.schema";
 import {validate} from "../utils/validate";
 import {createResponse} from "../../../shared/createResponse";
+import {StatusCodes} from "http-status-codes";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
 
-export const createProduct = async (event) => {
+export const createProduct = middy(async (event) => {
     const {body} = event;
 
     console.log(`event: ${JSON.stringify(event)}`);
@@ -33,10 +36,10 @@ export const createProduct = async (event) => {
             values: [count, products[0].id]
         })
 
-        return createResponse(201);
+        return createResponse(StatusCodes.CREATED);
     } catch (error) {
         return errorHandler(error);
     } finally {
         db.end();
     }
-}
+}).use(cors())

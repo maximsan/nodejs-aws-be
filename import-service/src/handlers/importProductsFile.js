@@ -16,8 +16,8 @@ const createS3 = () => {
 
 export const importProductsFile = middy(async (event) => {
     console.log(`queryStringParameters: ${JSON.stringify(event.queryStringParameters)}`);
-    const {queryStringParameters: {name: fileName = ''} = {}} = event
 
+    const fileName = event && event.queryStringParameters && event.queryStringParameters.name;
     if (!fileName) {
         return createResponse(StatusCodes.BAD_REQUEST, 'name is required param')
     }

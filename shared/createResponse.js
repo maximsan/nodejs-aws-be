@@ -1,11 +1,11 @@
-export const createResponse = (status, data) => {
+export const createResponse = (statusCode, data) => {
     let body = data;
     if(typeof data !== "string") {
         body = JSON.stringify(body);
     }
 
     return {
-        statusCode: status,
+        statusCode,
         body,
     }
 }
