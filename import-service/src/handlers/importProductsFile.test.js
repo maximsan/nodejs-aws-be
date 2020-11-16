@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk-mock';
-import {S3} from "aws-sdk";
 import lambdaTester from "lambda-tester";
 import {importProductsFile} from "./importProductsFile";
 
@@ -9,7 +8,7 @@ describe('importProductsFile', () => {
         const fileName = 'product.csv'
         const signedUrl = `https://somethingwassigned/${fileName}`;
 
-        AWS.mock("S3", "getSignedUrl", (action, _params, cb) => {
+        AWS.mock("S3", "getSignedUrl", (action, _, cb) => {
             cb(null, signedUrl);
         })
 

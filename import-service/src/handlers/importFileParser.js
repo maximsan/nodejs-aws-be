@@ -21,19 +21,13 @@ export const importFileParser = middy(async (event) => {
 
     try {
         for (const record of event.Records) {
-            console.log(`record: ${JSON.stringify(record)}`)
             const Key = record.s3.object.key;
             const bucketParams = {
                 Bucket: BUCKET,
                 Key,
             }
 
-            console.log(`Key: ${Key}`)
-            console.log(`BUCKET: ${BUCKET}`)
-
             const stream = s3.getObject(bucketParams).createReadStream()
-
-            console.log(`stream: ${JSON.stringify(stream)}`)
 
             const writableStream = new Writable({
                 objectMode: true,
@@ -58,11 +52,9 @@ export const importFileParser = middy(async (event) => {
 
                     console.log(`Copy to ${BUCKET}/${newKey}`);
 
-                    callback();
+                    callback(null);
                 }
             })
-
-            console.log(`writableStream: ${JSON.stringify(writableStream)}`)
 
             await promisifiedPipeline(
                 stream,
