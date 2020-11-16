@@ -1,14 +1,32 @@
 import AWS from 'aws-sdk-mock';
 import {S3} from "aws-sdk";
+import lambdaTester from "lambda-tester";
+import {importProductsFile} from "./importProductsFile";
 
 describe('importProductsFile', () => {
-    it('should return signed url if getSignedUrl was called for puObject event', async () => {
-        AWS.mock("S3", "getSignedUrl", (action, _params, cb) => {
-            cb(null, 'aws.com');
-        })
-        const s3 = new S3();
-        const url = await s3.getSignedUrlPromise('putObject', {Key: 'key', Bucket: 'Bucket'})
+    it('should return status 200 (OK) and signed url ' +
+        'if getSignedUrl was called for puObject event', async () => {
+        const fileName = 'product.csv'
+        const signedUrl = `https://somethingwassigned/${fileName}`;
 
-        expect(url).toBe('aws.com');
+        AWS.mock("S3", "getSignedUrl", (action, _params, cb) => {
+            cb(null, signedUrl);
+        })
+
+        await lambdaTester(importProductsFile)
+            .event({queryStringParameters:{name: fileName}})
+            .expectResult(result => {
+                expect(result.statusCode).toBe(200);
+                expect(result.body).toBe(signedUrl);
+            })
+    });
+    it('should return status 400 (BAD_REQUEST) and message that name is required param ' +
+        'if name is missed', async () => {
+        await lambdaTester(importProductsFile)
+            .event({})
+            .expectResult(result => {
+                expect(result.statusCode).toBe(400);
+                expect(result.body).toBe('name is required param');
+            })
     });
 })
