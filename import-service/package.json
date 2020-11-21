@@ -1,31 +1,32 @@
 {
-  "name": "import-service",
-  "version": "1.0.0",
-  "description": "Serverless webpack example using ecma script",
-  "scripts": {
-    "local": "sls offline",
-    "deploy": "sls deploy",
-    "deploy:f": "sls deploy -f",
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.12.1",
-    "aws-sdk": "^2.792.0",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "http-status-codes": "^2.1.4",
-    "serverless-dotenv-plugin": "^3.1.0",
-    "serverless-webpack": "^5.3.1",
-    "webpack": "^4.35.2"
-  },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
-  "license": "MIT",
-  "dependencies": {
-    "@middy/core": "^1.4.0",
-    "@middy/http-cors": "^1.4.0",
-    "aws-sdk-mock": "^5.1.0",
-    "csv-parser": "^2.3.3"
-  }
+    "name": "import-service",
+    "version": "1.0.0",
+    "description": "Serverless webpack example using ecma script",
+    "scripts": {
+        "local": "sls offline",
+        "deploy": "sls deploy",
+        "deploy:f": "sls deploy -f",
+        "test": "jest",
+        "invoke:importProductsFile": "serverless invoke local --function importProductsFile -p mockData/event.json"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.11.1",
+        "@babel/preset-env": "^7.12.1",
+        "aws-sdk": "^2.792.0",
+        "babel-loader": "^8.1.0",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-polyfill": "^6.23.0",
+        "http-status-codes": "^2.1.4",
+        "serverless-dotenv-plugin": "^3.1.0",
+        "serverless-webpack": "^5.3.1",
+        "webpack": "^4.35.2"
+    },
+    "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+    "license": "MIT",
+    "dependencies": {
+        "@middy/core": "^1.4.0",
+        "@middy/http-cors": "^1.4.0",
+        "aws-sdk-mock": "^5.1.0",
+        "csv-parser": "^2.3.3"
+    }
 }
