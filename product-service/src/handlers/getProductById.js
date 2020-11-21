@@ -1,8 +1,11 @@
 import {runDB} from "../utils/db";
-import {errorHandler} from "../utils/errorHandler";
-import {createResponse} from "../utils/createResponse";
+import {errorHandler} from "../../error/errorHandler";
+import {createResponse} from "../../error/createResponse";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
+import {StatusCodes} from "http-status-codes";
 
-export const getProductById = async event => {
+export const getProductById = middy(async event => {
     const {pathParameters: {id}} = event;
 
     console.log(`event: ${JSON.stringify(event)}`);
@@ -20,15 +23,15 @@ export const getProductById = async event => {
         );
 
         if (rows && rows[0]) {
-            return createResponse(200, rows[0]);
+            return createResponse(StatusCodes.OK, rows[0]);
         }
 
-        return createResponse(404, `Product not found by id ${id}`);
+        return createResponse(StatusCodes.NOT_FOUND, `Product not found by id ${id}`);
     } catch (error) {
         return errorHandler(error);
     } finally {
         db.end();
     }
-};
+}).use(cors());
 
 

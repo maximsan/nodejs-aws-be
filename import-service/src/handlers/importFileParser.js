@@ -1,0 +1,68 @@
+import middy from '@middy/core';
+import {createS3} from "./createS3";
+import csv from 'csv-parser';
+import {BUCKET} from "../config";
+import {StatusCodes} from "http-status-codes";
+import {promisify} from 'util'
+import {pipeline, Writable} from 'stream'
+import {createResponse} from "../../error/createResponse";
+import {errorHandler} from "../../error/errorHandler";
+
+const promisifiedPipeline = promisify(pipeline);
+
+export const importFileParser = middy(async (event) => {
+    const s3 = createS3();
+
+    console.log(`event: ${JSON.stringify(event)}`);
+
+    if (!(event && event.Records && event.Records.length)) {
+        return createResponse(StatusCodes.NOT_FOUND, 'data is empty')
+    }
+
+    try {
+        for (const record of event.Records) {
+            const Key = record.s3.object.key;
+            const bucketParams = {
+                Bucket: BUCKET,
+                Key,
+            }
+
+            const stream = s3.getObject(bucketParams).createReadStream()
+
+            const writableStream = new Writable({
+                objectMode: true,
+                write(record, _, callback) {
+                    console.log(`record: ${JSON.stringify(record)}`)
+                    callback();
+                },
+                async final(callback) {
+                    console.log(`Copy from ${BUCKET}/${Key}`)
+                    const newKey = Key.replace('uploaded', 'parsed');
+
+                    await s3.copyObject({
+                        ...bucketParams,
+                        CopySource: `${BUCKET}/${Key}`,
+                        Key: newKey
+                    }).promise()
+
+                    await s3.deleteObject({
+                        Bucket: BUCKET,
+                        Key
+                    }).promise()
+
+                    console.log(`Copy to ${BUCKET}/${newKey}`);
+
+                    callback(null);
+                }
+            })
+
+            await promisifiedPipeline(
+                stream,
+                csv(),
+                writableStream
+            )
+        }
+    } catch (error) {
+        return errorHandler(error)
+    }
+})

@@ -1,0 +1,4 @@
+GET {{url}}/import?name=name
+
+
+#sls invoke local -f importProductsFile -d '{"queryStringParameters":{"name":"test.csv"}}'
