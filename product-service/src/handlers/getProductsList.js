@@ -1,5 +1,5 @@
-import {errorHandler} from "../../error/errorHandler";
-import {createResponse} from "../../error/createResponse";
+import {errorHandler} from "../../../shared/error";
+import {createResponse} from "../../../shared/createResponse";
 import middy from "@middy/core";
 import cors from "@middy/http-cors";
 import {StatusCodes} from "http-status-codes";

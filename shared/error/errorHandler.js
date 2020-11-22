@@ -1,6 +1,6 @@
 import {NotFoundError} from "./NotFoundError";
 import {BadRequest} from "./BadRequest";
-import {createResponse} from "./createResponse";
+import {createResponse} from "../createResponse";
 
 export const errorHandler = (error) => {
     console.log(`error in errorHandler ${JSON.stringify(error)}`);

@@ -3,8 +3,8 @@ import middy from '@middy/core';
 import cors from "@middy/http-cors";
 import {createS3} from "./createS3";
 import {BUCKET} from "../config";
-import {createResponse} from "../../error/createResponse";
-import {errorHandler} from "../../error/errorHandler";
+import {createResponse} from "../../../shared/createResponse";
+import {errorHandler} from "../../../shared/error";
 
 export const importProductsFile = middy(async (event) => {
     console.log(`queryStringParameters: ${JSON.stringify(event.queryStringParameters)}`);

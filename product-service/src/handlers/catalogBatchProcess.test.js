@@ -1,7 +1,6 @@
 import lambdaTester from "lambda-tester";
 import {catalogBatchProcess} from "./catalogBatchProcess";
 import productBatchEvent from '../../__mocks__/productBatchEvent.json'
-import AWS from 'aws-sdk-mock';
 import {ProductService} from "../product.service";
 import {SnsService} from "../sns.service";
 

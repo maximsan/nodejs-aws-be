@@ -5,9 +5,9 @@ import {BUCKET, CATALOG_ITEMS_QUEUE_URL} from "../config";
 import {StatusCodes} from "http-status-codes";
 import {promisify} from 'util'
 import {pipeline, Writable} from 'stream'
-import {createResponse} from "../../error/createResponse";
-import {errorHandler} from "../../error/errorHandler";
 import {SQS} from 'aws-sdk'
+import {createResponse} from "../../../shared/createResponse";
+import {errorHandler} from "../../../shared/error";
 
 const promisifiedPipeline = promisify(pipeline);
 

@@ -1,11 +1,4 @@
-import {createProduct} from './createProduct'
-import {getProductsList} from './getProductsList'
-import {getProductById} from './getProductById'
-import {catalogBatchProcess} from './catalogBatchProcess'
-
-export {
-    createProduct,
-    getProductById,
-    getProductsList,
-    catalogBatchProcess
-}
+export {createProduct} from './createProduct'
+export {getProductsList} from './getProductsList'
+export {getProductById} from './getProductById'
+export {catalogBatchProcess} from './catalogBatchProcess'
