@@ -13,7 +13,7 @@ describe('getProductsList', () => {
         serviceSpy.mockClear();
     })
 
-    it('should return list of product', async () => {
+    it('should return list of products', async () => {
         serviceSpy.mockReturnValue(mockedProducts);
 
         const expectedResult = mockedProducts;
@@ -34,7 +34,6 @@ describe('getProductsList', () => {
             .event({})
             .expectResult((result) => {
                 expect(result.statusCode).toBe(500);
-                console.log(result.body);
                 expect(typeof result.body).toBe('string');
             });
     });
