@@ -8,36 +8,59 @@ import {ProductService} from "../product.service";
 import {validate} from "../utils/validate";
 import {productSchema} from "../utils/product.validation.schema";
 import {SNS} from 'aws-sdk';
+import {CATALOG_ITEMS_ADD_SUBSCRIPTION} from "../config";
 
 const ProductRepo = new ProductRepository();
 const ProductServ = new ProductService(ProductRepo);
 
 export const catalogBatchProcess = middy(async (event) => {
-    const {Records: products} = event
+    const {Records = []} = event;
 
-    const sns = new SNS({region: 'eu-west-1'})
+    console.log(`catalogBatchProcess event ${JSON.stringify(event)}`);
 
-    const deserializedProducts = JSON.parse(products);
+    const sns = new SNS({region: 'eu-west-1'});
 
-    for (const product of deserializedProducts) {
+    const products = [];
+    for (const record of Records) {
         try {
-            validate(productSchema, product)
+            const product = JSON.parse(record.body);
 
-            await ProductServ.create(product);
+            console.log(`product ${JSON.stringify(product)}`)
 
-            // const snsParams = {
-            //     Subject: `Product was added`,
-            //     Message: JSON.stringify(product),
-            //     TopicArn: SNS_ARN,
-            // }
-            // await sns.publish(snsParams).promise()
+            products.push(product);
+            // validate(productSchema, product)
 
-            return createResponse(StatusCodes.OK, JSON.stringify(product));
         } catch (error) {
+            console.log('Error during product reading');
             return errorHandler(error);
         }
     }
 
-    return createResponse(StatusCodes.CREATED);
+    if (!products.length) {
+        return createResponse(StatusCodes.ACCEPTED, "Nothing to save");
+    }
 
+    try {
+        await ProductServ.create(products);
+    } catch (error) {
+        console.log('Error during product creation');
+        return errorHandler(error);
+    }
+
+    try {
+        const snsParams = {
+            Subject: `Product was added`,
+            Message: JSON.stringify(products),
+            TopicArn: CATALOG_ITEMS_ADD_SUBSCRIPTION,
+        };
+
+        console.log(`snsParams ${JSON.stringify(snsParams)}`);
+
+        await sns.publish(snsParams).promise();
+    } catch (error) {
+        console.log('Error during notification publishing')
+        return errorHandler(error);
+    }
+
+    return createResponse(StatusCodes.CREATED);
 }).use(cors())

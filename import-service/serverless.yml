@@ -11,6 +11,8 @@ provider:
   environment:
     CATALOG_ITEMS_QUEUE_URL:
       Fn::ImportValue: product-service-catalog-items-queue-url
+#      Fn::ImportValue: ${cf:product-service-${self:provider.stage}.CatalogItemsQueueUrl}
+  #      product-service-catalog-items-queue-url
 
   iamRoleStatements:
     - Effect: 'Allow'
@@ -25,6 +27,8 @@ provider:
       Action: 'sqs:*'
       Resource:
         Fn::ImportValue: product-service-catalog-items-queue-arn
+#        Fn::ImportValue: ${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}
+#        product-service-catalog-items-queue-arn
 #          - Fn::GetAtt: [ CatalogItemsQueue, Arn ]
 #        - "${cf:product-service-${self:provider.stage}.SQSQueueArn}"
 

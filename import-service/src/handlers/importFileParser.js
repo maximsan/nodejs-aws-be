@@ -34,15 +34,15 @@ export const importFileParser = middy(async (event) => {
             const writableStream = new Writable({
                 objectMode: true,
                 async write(product, _, callback) {
-                    console.log(`record: ${JSON.stringify(record)}`)
+                    console.log(`record: ${JSON.stringify(product)}`)
 
+                    const strProduct = JSON.stringify(product);
                     const sqsParams = {
                         QueueUrl: CATALOG_ITEMS_QUEUE_URL,
-                        MessageBody: product
+                        MessageBody: strProduct
                     }
 
-                    const broker = await sqs.sendMessage(sqsParams).promise();
-                    broker.send(product);
+                    await sqs.sendMessage(sqsParams).promise();
 
                     callback();
                 },

@@ -54,25 +54,29 @@ export class ProductRepository {
     async create(product) {
         const db = await runDB();
 
-        try {
-            const {title, description, price, count} = product;
+        const products = Array.isArray(product) ? product : [product];
 
-            const {rows: products} = await db.query({
-                text: queries.createProduct,
-                values: [title, description, price]
-            });
+        for (const product of products) {
+            try {
+                const {title, description, price, count} = product;
 
-            console.log('created product', products);
+                const {rows: products} = await db.query({
+                    text: queries.createProduct,
+                    values: [title, description, price]
+                });
 
-            await db.query({
-                text: queries.createStockNote,
-                values: [count, products[0].id]
-            })
+                console.log('created product', products);
 
-        } catch (error) {
-            return Promise.reject(error);
-        } finally {
-            db.end();
+                await db.query({
+                    text: queries.createStockNote,
+                    values: [count, products[0].id]
+                })
+
+            } catch (error) {
+                return Promise.reject(error);
+            } finally {
+                db.end();
+            }
         }
     }
 }

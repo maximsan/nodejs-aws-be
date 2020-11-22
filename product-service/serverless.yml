@@ -14,33 +14,32 @@ provider:
     DB_DATABASE: ${env:DB_DATABASE}
     DB_USERNAME: ${env:DB_USERNAME}
     DB_PASSWORD: ${env:DB_PASSWORD}
-#    SNS_ARN:
-#      Ref: SNSTopic
+    CATALOG_ITEMS_ADD_SUBSCRIPTION:
+      Ref: CreateProductTopic
 
   iamRoleStatements:
-#    - Effect: "Allow"
-#      Action: "sns:*"
-#      Resource:
-#        Ref: SNSTopic
+    - Effect: "Allow"
+      Action: "sns:*"
+      Resource:
+        Ref: CreateProductTopic
 
 resources:
   Resources:
-#    SQSQueue
     CatalogItemsQueue:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: catalogItemsQueue
-#    SNSTopic:
-#      Type: AWS::SNS::Topic
-#      Properties:
-#        TopicName: product-service-sns-topic
-#    SNSSubscription:
-#      Type: AWS::SNS::Subscription
-#      Properties:
-#        Endpoint: maximuzz@gmail.com
-#        Protocol: email
-#        TopicArn:
-#          Ref: SNSTopic
+    CreateProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    CreateProductSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: maximuzz@yandex.ru
+        Protocol: email
+        TopicArn:
+          Ref: CreateProductTopic
   Outputs:
     CatalogItemsQueueUrl:
       Value:
