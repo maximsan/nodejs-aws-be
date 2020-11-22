@@ -8,16 +8,25 @@ provider:
   stage: dev
   region: eu-west-1
 
+  environment:
+    CATALOG_ITEMS_QUEUE_URL:
+      Fn::ImportValue: product-service-catalog-items-queue-url
+
   iamRoleStatements:
     - Effect: 'Allow'
       Action: 's3:ListBucket'
       Resource:
         - 'arn:aws:s3:::nodejs-aws-be-upload'
     - Effect: 'Allow'
-      Action:
-        - 's3:*'
+      Action: 's3:*'
       Resource:
         - 'arn:aws:s3:::nodejs-aws-be-upload/*'
+    - Effect: 'Allow'
+      Action: 'sqs:*'
+      Resource:
+        Fn::ImportValue: product-service-catalog-items-queue-arn
+#          - Fn::GetAtt: [ CatalogItemsQueue, Arn ]
+#        - "${cf:product-service-${self:provider.stage}.SQSQueueArn}"
 
 plugins:
   - serverless-webpack
@@ -44,3 +53,4 @@ functions:
           rules:
             - prefix: uploaded/
           existing: true
+

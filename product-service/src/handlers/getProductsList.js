@@ -1,4 +1,3 @@
-import {runDB} from "../utils/db";
 import {errorHandler} from "../../error/errorHandler";
 import {createResponse} from "../../error/createResponse";
 import middy from "@middy/core";

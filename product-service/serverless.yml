@@ -14,6 +14,44 @@ provider:
     DB_DATABASE: ${env:DB_DATABASE}
     DB_USERNAME: ${env:DB_USERNAME}
     DB_PASSWORD: ${env:DB_PASSWORD}
+#    SNS_ARN:
+#      Ref: SNSTopic
+
+  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action: "sns:*"
+#      Resource:
+#        Ref: SNSTopic
+
+resources:
+  Resources:
+#    SQSQueue
+    CatalogItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+#    SNSTopic:
+#      Type: AWS::SNS::Topic
+#      Properties:
+#        TopicName: product-service-sns-topic
+#    SNSSubscription:
+#      Type: AWS::SNS::Subscription
+#      Properties:
+#        Endpoint: maximuzz@gmail.com
+#        Protocol: email
+#        TopicArn:
+#          Ref: SNSTopic
+  Outputs:
+    CatalogItemsQueueUrl:
+      Value:
+        Ref: CatalogItemsQueue
+      Export:
+        Name: ${self:service}-catalog-items-queue-url
+    CatalogItemsQueueArn:
+      Value:
+        Fn::GetAtt: [ CatalogItemsQueue, Arn ]
+      Export:
+        Name: ${self:service}-catalog-items-queue-arn
 
 plugins:
   - serverless-webpack
@@ -42,4 +80,10 @@ functions:
           path: products
           method: post
           cors: true
-
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt: [ CatalogItemsQueue, Arn]

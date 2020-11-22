@@ -7,7 +7,7 @@
         "deploy": "sls deploy",
         "deploy:f": "sls deploy -f",
         "test": "jest",
-        "invoke:importProductsFile": "serverless invoke local --function importProductsFile -p mockData/event.json"
+        "invoke:importProductsFile": "serverless invoke local --function importProductsFile -p __mock__/importProductFileEvent.json"
     },
     "devDependencies": {
         "@babel/core": "^7.11.1",

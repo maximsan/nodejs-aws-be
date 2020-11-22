@@ -1,19 +1,19 @@
 import middy from '@middy/core';
 import {createS3} from "./createS3";
 import csv from 'csv-parser';
-import {BUCKET} from "../config";
+import {BUCKET, CATALOG_ITEMS_QUEUE_URL} from "../config";
 import {StatusCodes} from "http-status-codes";
 import {promisify} from 'util'
 import {pipeline, Writable} from 'stream'
 import {createResponse} from "../../error/createResponse";
 import {errorHandler} from "../../error/errorHandler";
+import {SQS} from 'aws-sdk'
 
 const promisifiedPipeline = promisify(pipeline);
 
 export const importFileParser = middy(async (event) => {
     const s3 = createS3();
-
-    console.log(`event: ${JSON.stringify(event)}`);
+    const sqs = new SQS();
 
     if (!(event && event.Records && event.Records.length)) {
         return createResponse(StatusCodes.NOT_FOUND, 'data is empty')
@@ -27,12 +27,23 @@ export const importFileParser = middy(async (event) => {
                 Key,
             }
 
+            console.log(`event record ${JSON.stringify(record)}`);
+
             const stream = s3.getObject(bucketParams).createReadStream()
 
             const writableStream = new Writable({
                 objectMode: true,
-                write(record, _, callback) {
+                async write(product, _, callback) {
                     console.log(`record: ${JSON.stringify(record)}`)
+
+                    const sqsParams = {
+                        QueueUrl: CATALOG_ITEMS_QUEUE_URL,
+                        MessageBody: product
+                    }
+
+                    const broker = await sqs.sendMessage(sqsParams).promise();
+                    broker.send(product);
+
                     callback();
                 },
                 async final(callback) {

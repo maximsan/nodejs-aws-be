@@ -6,3 +6,4 @@ config({
 })
 
 export const BUCKET = process.env.BUCKET
+export const CATALOG_ITEMS_QUEUE_URL = process.env.CATALOG_ITEMS_QUEUE_URL;
