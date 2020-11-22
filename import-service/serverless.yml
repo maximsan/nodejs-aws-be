@@ -10,9 +10,8 @@ provider:
 
   environment:
     CATALOG_ITEMS_QUEUE_URL:
-      Fn::ImportValue: product-service-catalog-items-queue-url
-#      Fn::ImportValue: ${cf:product-service-${self:provider.stage}.CatalogItemsQueueUrl}
-  #      product-service-catalog-items-queue-url
+#      - "${cf:product-service-${self:provider.stage}.CatalogItemsQueueUrl}"
+      Fn::ImportValue: product-service-dev-catalog-items-queue-url
 
   iamRoleStatements:
     - Effect: 'Allow'
@@ -26,11 +25,8 @@ provider:
     - Effect: 'Allow'
       Action: 'sqs:*'
       Resource:
-        Fn::ImportValue: product-service-catalog-items-queue-arn
-#        Fn::ImportValue: ${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}
-#        product-service-catalog-items-queue-arn
-#          - Fn::GetAtt: [ CatalogItemsQueue, Arn ]
-#        - "${cf:product-service-${self:provider.stage}.SQSQueueArn}"
+#        - "${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}"
+        Fn::ImportValue: product-service-dev-catalog-items-queue-arn
 
 plugins:
   - serverless-webpack

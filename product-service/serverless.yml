@@ -45,12 +45,12 @@ resources:
       Value:
         Ref: CatalogItemsQueue
       Export:
-        Name: ${self:service}-catalog-items-queue-url
+        Name: ${self:service}-${self:provider.stage}-catalog-items-queue-url
     CatalogItemsQueueArn:
       Value:
         Fn::GetAtt: [ CatalogItemsQueue, Arn ]
       Export:
-        Name: ${self:service}-catalog-items-queue-arn
+        Name: ${self:service}-${self:provider.stage}-catalog-items-queue-arn
 
 plugins:
   - serverless-webpack
