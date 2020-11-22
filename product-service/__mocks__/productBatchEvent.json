@@ -1,0 +1,21 @@
+{
+    "Records": [
+        {
+            "messageId": "059359f0-3d2e-44b8-918a-8465a570d98e",
+            "receiptHandle": "AQEBUAthGO2by1ub/kzhuP7xafYWuSoTdhXwC7Gy566jumUxHZ6piTgGA9h4J179+mvowxDYXCGFKIoKyRIltSl7h083NvmNf9QCrlnUwW92ncU39EgYneTJILc97eILX5945E9BT1QRy80j6v07H5EBFztP3cf+spYMHmv1BOcjdNg7uLhT2FBvV8AiOzQHjj1rX29sFFmjbL/19NcorDUOacmwwVSd6KALdmysOUBDt8Fl9NHIfrzBuOapPdm1FyYja5/Hp1aKpuysvUpIcsTKwn6RwiFRCeag/v6/I8UhkxaQcnv5yNKYu/rzDILZJtmueGTWP5zwDWifBIKLxT+WcAix7KrjYrS97brj3PzMb8BQenykE7Nr8HWEZolwP7k+W23O/xjgil7YSlvBcxxReg==",
+            "body": "{\"price\":\"199999\",\"title\":\"Guitar 35\",\"description\":\"Guitar 35 description\",\"count\":\"32\"}",
+            "attributes": {
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "1606070619524",
+                "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
+                "ApproximateFirstReceiveTimestamp": "1606070619526"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "cd0d3ad473deaad3f30f3678026b9cd7",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
+            "awsRegion": "eu-west-1"
+        }
+    ]
+}
+

@@ -5,20 +5,18 @@ import {createResponse} from "../../error/createResponse";
 import {StatusCodes} from "http-status-codes";
 import {ProductRepository} from "../product.repository";
 import {ProductService} from "../product.service";
+import {SnsService} from "../sns.service";
 import {validate} from "../utils/validate";
 import {productSchema} from "../utils/product.validation.schema";
-import {SNS} from 'aws-sdk';
-import {CATALOG_ITEMS_ADD_SUBSCRIPTION} from "../config";
 
 const ProductRepo = new ProductRepository();
 const ProductServ = new ProductService(ProductRepo);
+const SnsServ = new SnsService();
 
 export const catalogBatchProcess = middy(async (event) => {
     const {Records = []} = event;
 
     console.log(`catalogBatchProcess event ${JSON.stringify(event)}`);
-
-    const sns = new SNS({region: 'eu-west-1'});
 
     const products = [];
     for (const record of Records) {
@@ -48,15 +46,7 @@ export const catalogBatchProcess = middy(async (event) => {
     }
 
     try {
-        const snsParams = {
-            Subject: `Product was added`,
-            Message: JSON.stringify(products),
-            TopicArn: CATALOG_ITEMS_ADD_SUBSCRIPTION,
-        };
-
-        console.log(`snsParams ${JSON.stringify(snsParams)}`);
-
-        await sns.publish(snsParams).promise();
+        await SnsServ.send(products);
     } catch (error) {
         console.log('Error during notification publishing')
         return errorHandler(error);
