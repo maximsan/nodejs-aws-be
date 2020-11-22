@@ -37,6 +37,25 @@ resources:
       Type: AWS::SNS::Subscription
       Properties:
         Endpoint: maximuzz@yandex.ru
+        FilterPolicy:
+          guitarPrice:
+            - numeric:
+                - ">"
+                - 0
+                - "<"
+                - 3000
+        Protocol: email
+        TopicArn:
+          Ref: CreateProductTopic
+    CreateProductSubscription2:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: xalpinistx@gmail.com
+        FilterPolicy:
+          guitarPrice:
+            - numeric:
+                - ">"
+                - 3000
         Protocol: email
         TopicArn:
           Ref: CreateProductTopic
