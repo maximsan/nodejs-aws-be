@@ -8,60 +8,46 @@ import {pipeline, Writable} from 'stream'
 import {SQS} from 'aws-sdk'
 import {createResponse} from "../../../shared/createResponse";
 import {errorHandler} from "../../../shared/error";
+import {StorageService} from "../storage.service";
 
 const promisifiedPipeline = promisify(pipeline);
+const StorageServ = new StorageService();
+const QueueServ = new QueueService();
 
 export const importFileParser = middy(async (event) => {
-    const s3 = createS3();
-    const sqs = new SQS();
-
     if (!(event && event.Records && event.Records.length)) {
         return createResponse(StatusCodes.NOT_FOUND, 'data is empty')
     }
 
     try {
         for (const record of event.Records) {
-            const Key = record.s3.object.key;
-            const bucketParams = {
-                Bucket: BUCKET,
-                Key,
-            }
-
             console.log(`event record ${JSON.stringify(record)}`);
 
-            const stream = s3.getObject(bucketParams).createReadStream()
+            const key = record.s3.object.key;
+            const stream = StorageServ.get(key).createReadStream()
+            const messages = []
 
             const writableStream = new Writable({
                 objectMode: true,
                 async write(product, _, callback) {
-                    console.log(`record: ${JSON.stringify(product)}`)
-
                     const strProduct = JSON.stringify(product);
-                    const sqsParams = {
-                        QueueUrl: CATALOG_ITEMS_QUEUE_URL,
-                        MessageBody: strProduct
-                    }
 
-                    await sqs.sendMessage(sqsParams).promise();
+                    console.log(`record: ${strProduct}`)
+
+                    messages.push(QueueServ.sendMessage(messages));
 
                     callback();
                 },
                 async final(callback) {
-                    console.log(`Copy from ${BUCKET}/${Key}`)
-                    const newKey = Key.replace('uploaded', 'parsed');
+                    console.log(`Copy from ${BUCKET}/${key}`)
 
-                    await s3.copyObject({
-                        ...bucketParams,
-                        CopySource: `${BUCKET}/${Key}`,
-                        Key: newKey
-                    }).promise()
+                    const newKey = key.replace('uploaded', 'parsed');
 
-                    await s3.deleteObject({
-                        Bucket: BUCKET,
-                        Key
-                    }).promise()
+                    await StorageServ.moveFromTo(key, newKey);
 
                     console.log(`Copy to ${BUCKET}/${newKey}`);
+
+                    await Promise.all(messages);
 
                     callback(null);
                 }

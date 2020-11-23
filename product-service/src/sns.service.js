@@ -1,11 +1,14 @@
 import {CATALOG_ITEMS_ADD_SUBSCRIPTION} from "./config";
 import {SNS} from "aws-sdk";
 
+const snsParams = {region: 'eu-west-1'}
 
 export class SnsService {
-    async send(messages) {
-        const sns = new SNS({region: 'eu-west-1'});
+    constructor() {
+        this.sns = new SNS(snsParams);
+    }
 
+    async send(messages) {
         try {
             const snsParams = {
                 Subject: `Product was added`,
@@ -19,7 +22,7 @@ export class SnsService {
                 }
             };
 
-            await sns.publish(snsParams).promise();
+            await this.sns.publish(snsParams).promise();
         } catch (error) {
             return Promise.reject(error);
         }

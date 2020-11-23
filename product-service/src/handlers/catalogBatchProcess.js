@@ -17,19 +17,20 @@ export const catalogBatchProcess = middy(async (event) => {
     const {Records = []} = event;
 
     console.log(`catalogBatchProcess event ${JSON.stringify(event)}`);
+    console.log(`records to process ${Records.length}`);
 
     const products = [];
     for (const record of Records) {
         try {
+            validate(productSchema, record.body);
+
             const product = JSON.parse(record.body);
 
             console.log(`product ${JSON.stringify(product)}`)
 
             products.push(product);
-            // validate(productSchema, product)
-
         } catch (error) {
-            console.log('Error during product reading');
+            console.log('Error during products reading');
             return errorHandler(error);
         }
     }
