@@ -1,14 +1,13 @@
 import middy from '@middy/core';
-import {createS3} from "./createS3";
 import csv from 'csv-parser';
-import {BUCKET, CATALOG_ITEMS_QUEUE_URL} from "../config";
+import {BUCKET} from "../config";
 import {StatusCodes} from "http-status-codes";
 import {promisify} from 'util'
 import {pipeline, Writable} from 'stream'
-import {SQS} from 'aws-sdk'
 import {createResponse} from "../../../shared/createResponse";
 import {errorHandler} from "../../../shared/error";
 import {StorageService} from "../storage.service";
+import {QueueService} from "../queue.service";
 
 const promisifiedPipeline = promisify(pipeline);
 const StorageServ = new StorageService();
