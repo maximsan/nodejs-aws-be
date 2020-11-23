@@ -42,4 +42,14 @@ export class StorageService {
         await this.copy(from, to);
         await this.delete(from);
     }
+
+    getUrl(filePath, operation = 'putObject') {
+        const bucketParams = {
+            Bucket: BUCKET,
+            Key: filePath,
+            ContentType: 'text/csv'
+        }
+
+        return this.storage.getSignedUrlPromise(operation, bucketParams)
+    }
 }

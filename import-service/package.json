@@ -7,10 +7,13 @@
         "deploy": "sls deploy",
         "deploy:f": "sls deploy -f",
         "test": "jest",
-        "invoke:importProductsFile": "serverless invoke local --function importProductsFile -p __mock__/importProductFileEvent.json"
+        "invoke:local": "sls invoke local",
+        "invoke:local:importProductsFile": "yarn invoke:local -f importProductsFile -p __mock__/importProductFileEvent.json",
+        "invoke:local:importFileParser": "yarn invoke:local -f importFileParser -p __mock__/importFileParserEvent.json"
     },
     "devDependencies": {
         "@babel/core": "^7.11.1",
+        "@babel/plugin-proposal-optional-chaining": "^7.12.7",
         "@babel/preset-env": "^7.12.1",
         "aws-sdk": "^2.792.0",
         "babel-loader": "^8.1.0",

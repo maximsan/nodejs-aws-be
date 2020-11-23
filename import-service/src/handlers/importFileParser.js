@@ -1,4 +1,6 @@
 import middy from '@middy/core';
+
+const inputOutputLogger = require('@middy/input-output-logger')
 import csv from 'csv-parser';
 import {BUCKET} from "../config";
 import {StatusCodes} from "http-status-codes";
@@ -14,7 +16,7 @@ const StorageServ = new StorageService();
 const QueueServ = new QueueService();
 
 export const importFileParser = middy(async (event) => {
-    if (!(event && event.Records && event.Records.length)) {
+    if (!(event?.Records?.length)) {
         return createResponse(StatusCodes.NOT_FOUND, 'data is empty')
     }
 
@@ -33,7 +35,7 @@ export const importFileParser = middy(async (event) => {
 
                     console.log(`record: ${strProduct}`)
 
-                    messages.push(QueueServ.sendMessage(messages));
+                    messages.push(QueueServ.sendMessage(strProduct));
 
                     callback();
                 },
@@ -61,4 +63,4 @@ export const importFileParser = middy(async (event) => {
     } catch (error) {
         return errorHandler(error)
     }
-})
+}).use(inputOutputLogger())
