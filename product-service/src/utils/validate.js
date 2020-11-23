@@ -1,14 +1,13 @@
-import {BadRequest} from "../../../shared/error";
-
 export const validate = (schema, data) => {
-    const {error} = schema.validate(data);
-    console.log('error', error);
+    const {error, value} = schema.validate(data);
 
     if (error) {
         const {details} = error;
-        console.log('error.details', details)
         const message = details.map(i => i.message).join(',');
 
-        throw new BadRequest(message);
+        console.log(`full error message: ${JSON.stringify(message)}`);
+    } else {
+        console.log(`return validated value: ${JSON.stringify(value)}`);
+        return value
     }
 }

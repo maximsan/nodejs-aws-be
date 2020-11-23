@@ -1,4 +1,5 @@
 import middy from "@middy/core";
+import inputOutputLogger from '@middy/input-output-logger';
 import cors from "@middy/http-cors";
 import {errorHandler} from "../../../shared/error";
 import {createResponse} from "../../../shared/createResponse";
@@ -16,19 +17,18 @@ const SnsServ = new SnsService();
 export const catalogBatchProcess = middy(async (event) => {
     const {Records = []} = event;
 
-    console.log(`catalogBatchProcess event ${JSON.stringify(event)}`);
     console.log(`records to process ${Records.length}`);
 
     const products = [];
     for (const record of Records) {
         try {
-            validate(productSchema, record.body);
-
             const product = JSON.parse(record.body);
 
-            console.log(`product ${JSON.stringify(product)}`)
+            const validProduct = validate(productSchema, product);
 
-            products.push(product);
+            console.log(`product ${JSON.stringify(validProduct)}`)
+
+            products.push(validProduct);
         } catch (error) {
             console.log('Error during products reading');
             return errorHandler(error);
@@ -40,6 +40,7 @@ export const catalogBatchProcess = middy(async (event) => {
     }
 
     try {
+        console.log('------products------', products);
         await ProductServ.create(products);
     } catch (error) {
         console.log('Error during product creation');
@@ -54,4 +55,6 @@ export const catalogBatchProcess = middy(async (event) => {
     }
 
     return createResponse(StatusCodes.CREATED);
-}).use(cors())
+})
+    .use(cors())
+    .use(inputOutputLogger())
