@@ -1,19 +1,26 @@
 import AWS from 'aws-sdk-mock';
 import lambdaTester from "lambda-tester";
 import {importProductsFile} from "./importProductsFile";
+import {StorageService} from "../storage.service";
 
 describe('importProductsFile', () => {
+    let spyService;
+    beforeEach(() => {
+        spyService = jest.spyOn(StorageService.prototype, 'getUrl')
+    })
+
+    afterEach(() => {
+        spyService.mockClear();
+    })
+
     it('should return status 200 (OK) and signed url ' +
         'if getSignedUrl was called for puObject event', async () => {
         const fileName = 'product.csv'
         const signedUrl = `https://somethingwassigned/${fileName}`;
-
-        AWS.mock("S3", "getSignedUrl", (action, _, cb) => {
-            cb(null, signedUrl);
-        })
+        spyService.mockReturnValue(signedUrl)
 
         await lambdaTester(importProductsFile)
-            .event({queryStringParameters:{name: fileName}})
+            .event({queryStringParameters: {name: fileName}})
             .expectResult(result => {
                 expect(result.statusCode).toBe(200);
                 expect(result.body).toBe(signedUrl);

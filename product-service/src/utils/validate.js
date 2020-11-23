@@ -1,4 +1,4 @@
-import {BadRequest} from "../../../shared/error/BadRequest";
+import {BadRequest} from "../../../shared/error";
 
 export const validate = (schema, data) => {
     const {error} = schema.validate(data);

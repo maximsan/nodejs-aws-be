@@ -1,6 +1,5 @@
 import middy from '@middy/core';
-
-const inputOutputLogger = require('@middy/input-output-logger')
+import inputOutputLogger from '@middy/input-output-logger';
 import csv from 'csv-parser';
 import {BUCKET} from "../config";
 import {StatusCodes} from "http-status-codes";
