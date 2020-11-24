@@ -10,7 +10,7 @@ provider:
 
   environment:
     CATALOG_ITEMS_QUEUE_URL:
-#      - "${cf:product-service-${self:provider.stage}.CatalogItemsQueueUrl}"
+#      - ${cf:product-service-${self:provider.stage}.CatalogItemsQueueUrl}
       Fn::ImportValue: product-service-dev-catalog-items-queue-url
 
   iamRoleStatements:
@@ -25,7 +25,7 @@ provider:
     - Effect: 'Allow'
       Action: 'sqs:*'
       Resource:
-#        - "${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}"
+#        - ${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}
         Fn::ImportValue: product-service-dev-catalog-items-queue-arn
 
 plugins:

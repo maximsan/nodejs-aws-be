@@ -9,10 +9,10 @@ const queries = {
                            join stocks as s on p.id = s.product_id`,
     getProductById: `select p.id, p.price, p.title, p.description, s.count
                      from products as p
-                                       join stocks as s on p.id = s.product_id
+                              join stocks as s on p.id = s.product_id
                      where p.id = $1`,
     createStockNote: `insert into stocks (count, product_id)
-                   values ($1, $2)`
+                      values ($1, $2)`
 }
 
 export class ProductRepository {
@@ -41,7 +41,7 @@ export class ProductRepository {
                 }
             );
 
-            if (rows && rows[0]) {
+            if (rows?.[0]) {
                 return rows[0];
             }
         } catch (error) {
@@ -56,27 +56,39 @@ export class ProductRepository {
 
         const products = Array.isArray(product) ? product : [product];
 
-        for (const product of products) {
-            try {
+        try {
+            for (const product of products) {
                 const {title, description, price, count} = product;
 
-                const {rows: products} = await db.query({
+                await db.query('BEGIN');
+
+                const {rows: [{id}]} = await db.query({
                     text: queries.createProduct,
                     values: [title, description, price]
                 });
 
-                console.log('created product', products);
+                console.log('created product', product);
 
-                await db.query({
+                console.log('+++++++count', count)
+                console.log('+++++++id', id)
+                const result = await db.query({
                     text: queries.createStockNote,
-                    values: [count, products[0].id]
+                    values: [count, id]
                 })
 
-            } catch (error) {
-                return Promise.reject(error);
-            } finally {
-                db.end();
+                console.log('added in stock')
+                console.log('///////////////', result)
+
+                await db.query('COMMIT');
+
+                console.log('///////////////COMMIT')
             }
+        } catch (error) {
+            console.log('///////////////ROLLBACK\\\\\\\\\\\\\\');
+            await db.query('ROLLBACK');
+            return Promise.reject(error);
+        } finally {
+            db.end();
         }
     }
 }

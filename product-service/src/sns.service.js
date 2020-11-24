@@ -8,21 +8,23 @@ export class SnsService {
         this.sns = new SNS(snsParams);
     }
 
-    async send(messages) {
+    async send(message) {
+        console.log('sns service message', message);
+
         try {
             const snsParams = {
                 Subject: `Product was added`,
-                Message: JSON.stringify(messages),
+                Message: JSON.stringify(message),
                 TopicArn: CATALOG_ITEMS_ADD_SUBSCRIPTION,
                 MessageAttributes: {
                     guitarPrice: {
                         DataType: "Number",
-                        StringValue: messages[0].price
+                        StringValue: message?.price.toString()
                     }
                 }
             };
 
-            await this.sns.publish(snsParams).promise();
+            return this.sns.publish(snsParams).promise();
         } catch (error) {
             return Promise.reject(error);
         }

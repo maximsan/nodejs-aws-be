@@ -40,7 +40,7 @@ export const catalogBatchProcess = middy(async (event) => {
     }
 
     try {
-        console.log('------products------', products);
+        console.log('------products------', JSON.stringify(products));
         await ProductServ.create(products);
     } catch (error) {
         console.log('Error during product creation');
@@ -48,7 +48,7 @@ export const catalogBatchProcess = middy(async (event) => {
     }
 
     try {
-        await SnsServ.send(products);
+        await Promise.all(products.map(product => SnsServ.send(product)));
     } catch (error) {
         console.log('Error during notification publishing')
         return errorHandler(error);
