@@ -1,5 +1,5 @@
 export class LoggerService {
-    log(message) {
-        console.log(message);
-    }
+  log(message) {
+    console.log(message);
+  }
 }

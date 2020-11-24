@@ -1,55 +1,55 @@
-import {S3} from "aws-sdk";
-import {BUCKET} from "./config";
+import { S3 } from 'aws-sdk';
+import { BUCKET } from './config';
 
 const storageParams = {
-    region: 'eu-west-1'
-}
+  region: 'eu-west-1',
+};
 
 export class StorageService {
-    constructor() {
-        this.storage = new S3(storageParams);
-    }
+  constructor() {
+    this.storage = new S3(storageParams);
+  }
 
-    get(key) {
-        const bucketParams = {
-            Bucket: BUCKET,
-            Key: key,
-        }
+  get(key) {
+    const bucketParams = {
+      Bucket: BUCKET,
+      Key: key,
+    };
 
-        return this.storage.getObject(bucketParams)
-    }
+    return this.storage.getObject(bucketParams);
+  }
 
-    copy(from, to) {
-        const bucketParams = {
-            Bucket: BUCKET,
-            CopySource: `${BUCKET}/${from}`,
-            Key: to
-        }
+  copy(from, to) {
+    const bucketParams = {
+      Bucket: BUCKET,
+      CopySource: `${BUCKET}/${from}`,
+      Key: to,
+    };
 
-        return this.storage.copyObject(bucketParams).promise()
-    }
+    return this.storage.copyObject(bucketParams).promise();
+  }
 
-    delete(from) {
-        const bucketParams = {
-            Bucket: BUCKET,
-            Key: from
-        }
+  delete(from) {
+    const bucketParams = {
+      Bucket: BUCKET,
+      Key: from,
+    };
 
-        return this.storage.deleteObject(bucketParams).promise()
-    }
+    return this.storage.deleteObject(bucketParams).promise();
+  }
 
-    async moveFromTo(from, to) {
-        await this.copy(from, to);
-        await this.delete(from);
-    }
+  async moveFromTo(from, to) {
+    await this.copy(from, to);
+    await this.delete(from);
+  }
 
-    getUrl(filePath, operation = 'putObject') {
-        const bucketParams = {
-            Bucket: BUCKET,
-            Key: filePath,
-            ContentType: 'text/csv'
-        }
+  getUrl(filePath, operation = 'putObject') {
+    const bucketParams = {
+      Bucket: BUCKET,
+      Key: filePath,
+      ContentType: 'text/csv',
+    };
 
-        return this.storage.getSignedUrlPromise(operation, bucketParams)
-    }
+    return this.storage.getSignedUrlPromise(operation, bucketParams);
+  }
 }

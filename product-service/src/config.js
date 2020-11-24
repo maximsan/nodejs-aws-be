@@ -1,9 +1,9 @@
-import {config} from 'dotenv'
-import {join} from 'path'
+import { config } from 'dotenv';
+import { join } from 'path';
 
 config({
-    path: join(__dirname, '../.env')
-})
+  path: join(__dirname, '../.env'),
+});
 
 export const DB_PORT = process.env.DB_PORT;
 export const DB_DATABASE = process.env.DB_DATABASE;

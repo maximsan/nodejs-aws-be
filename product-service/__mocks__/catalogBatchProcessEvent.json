@@ -1,53 +1,52 @@
 {
-    "Records": [
-        {
-            "messageId": "7c0c3aa1-604c-407a-ba5a-21d7756d0cf6",
-            "receiptHandle": "AQEBvUM8dIXTUgKOTU6QTZf931z77sAwNdBtS28FgLbr4av3ylF930sjKbuMtNJpjodirr3PzKDlm0Ayp1E9D7tr0xeI3YmAGEGDQImZPnEmtu5sWuxdU7Mjtz8gsZolPSBwkNo+3+crJ8NWtAVV1+8Pyd5WCauTX+Q0LVWCSUa1b7qfvfNOc1LvLo7cyesp3ePCRVawEQ599+bnXtvCfUVDjLG8m1EIAF8O6iYIaNIRncQbKHMUiuUxZSRy72TjANM9ll8ECUQVGzLC4u4Q7CZCfaQe5V6SdkzuuHpsGTzc9a+iy3VY+7FHpjQd9hiKGabFB/an/lAx/BLdgahvIVzo4q03EUDuXNFpQyJ5D4R7BxkjKpdOW7Z45vhxwSD8465Nf/vanVuy9Zi8i+GUFUmUjw==",
-            "body": "{\"price\":\"1200\",\"title\":\"Guitar 47\",\"description\":\"Guitar 47 description\",\"count\":\"3\"}",
-            "attributes": {
-                "ApproximateReceiveCount": "1",
-                "SentTimestamp": "1606148822221",
-                "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
-                "ApproximateFirstReceiveTimestamp": "1606148822222"
-            },
-            "messageAttributes": {},
-            "md5OfBody": "a0a072510900a576b4e2f23ab94df8f9",
-            "eventSource": "aws:sqs",
-            "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
-            "awsRegion": "eu-west-1"
-        },
-        {
-            "messageId": "d9e699b6-7eef-4dce-8cf6-43d6abf56790",
-            "receiptHandle": "AQEBbrHIzvIUWSotbmk9YF3fACNGJFdz7QucgqKJFcfSvjYGcxk9v7nW9njTxYnu/Na/A0pFORxzKmuRGrSQROS/Y4l3UEn+9sXV1Fhe50KgpIg2l7fV4WiqDasnd1g9HLD5hUD5dXnW4CdxQWPZGjdJ2Plh4F6hnRWFhz4EyCHKz5V/u/1+cQHyq60OoT+HdytnMU8uZ8+OTXAhb7aN8Ygvh2Hhmt5LL9/F2EK3oQSQEcrJ9P1jNRioGga5lYbPrKkcePmHwBxGX0bPZPf37igkycjcB3KYIKf3lsSJ2NvDzMKQVAuUsW4erY9OZfofIcXsbx3n5+g6d0ewKBrhTZze3WxhI220XIRmI7oDQlw1pKZz/c/lYVD4T8hTZW8dJVzSw0YnDmcDcxEFYi15uuzQOg==",
-            "body": "{\"price\":\"1206\",\"title\":\"Guitar 53\",\"description\":\"Guitar 53 description\",\"count\":\"3\"}",
-            "attributes": {
-                "ApproximateReceiveCount": "1",
-                "SentTimestamp": "1606148822215",
-                "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
-                "ApproximateFirstReceiveTimestamp": "1606148822216"
-            },
-            "messageAttributes": {},
-            "md5OfBody": "85c0010d0f00907679c2936ca28f7573",
-            "eventSource": "aws:sqs",
-            "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
-            "awsRegion": "eu-west-1"
-        },
-        {
-            "messageId": "3601c7b3-11e2-4a2e-bbd9-3668e7d1a293",
-            "receiptHandle": "AQEBdu5psma0qjWsry/n8PE/wzjI1xn85ZRuisqt5BxL3vhNi1TagwyKwqy9nYr/z4+Dc60a4C0XSUUA/DtVPnXZrzsqIYztqNHCph+F4j/ACLBhtrwg66GZTJG1xEN6nc/xflGpgswUlKJRNrZCSZYnTH3R9rKxwkmemNAxm6P7mg/XvGYHYFeyj0KRjY0gbydVbZg1cT2J6yj6nJT/jA0ITWIxzjMtUZJ9Apfx8QGi6jnV2MVB8yRa51FkoRyaaFt6hLY9agorNeYHzZ7+R3k1FT0XGZn+Ib8I0wypiNM7k60RQ/1H6DtuAOgtpJJLYktxY9vtlFjx8sWO0SUWCzf4LOBr0lax+/jiNLH+nztDIK3QvhmovMKY4OZwaJQThEV0MfhSOI8QW5enz/cXd8wL8A==",
-            "body": "{\"price\":\"44000\",\"title\":\"Guitar 42\",\"description\":\"Guitar 42 description\",\"count\":\"6\"}",
-            "attributes": {
-                "ApproximateReceiveCount": "1",
-                "SentTimestamp": "1606148822192",
-                "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
-                "ApproximateFirstReceiveTimestamp": "1606148822197"
-            },
-            "messageAttributes": {},
-            "md5OfBody": "6f9611f35a79874e827e7dd9c1bafd80",
-            "eventSource": "aws:sqs",
-            "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
-            "awsRegion": "eu-west-1"
-        }
-    ]
+  "Records": [
+    {
+      "messageId": "7c0c3aa1-604c-407a-ba5a-21d7756d0cf6",
+      "receiptHandle": "AQEBvUM8dIXTUgKOTU6QTZf931z77sAwNdBtS28FgLbr4av3ylF930sjKbuMtNJpjodirr3PzKDlm0Ayp1E9D7tr0xeI3YmAGEGDQImZPnEmtu5sWuxdU7Mjtz8gsZolPSBwkNo+3+crJ8NWtAVV1+8Pyd5WCauTX+Q0LVWCSUa1b7qfvfNOc1LvLo7cyesp3ePCRVawEQ599+bnXtvCfUVDjLG8m1EIAF8O6iYIaNIRncQbKHMUiuUxZSRy72TjANM9ll8ECUQVGzLC4u4Q7CZCfaQe5V6SdkzuuHpsGTzc9a+iy3VY+7FHpjQd9hiKGabFB/an/lAx/BLdgahvIVzo4q03EUDuXNFpQyJ5D4R7BxkjKpdOW7Z45vhxwSD8465Nf/vanVuy9Zi8i+GUFUmUjw==",
+      "body": "{\"price\":\"1200\",\"title\":\"Guitar 47\",\"description\":\"Guitar 47 description\",\"count\":\"3\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1606148822221",
+        "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
+        "ApproximateFirstReceiveTimestamp": "1606148822222"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "a0a072510900a576b4e2f23ab94df8f9",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "messageId": "d9e699b6-7eef-4dce-8cf6-43d6abf56790",
+      "receiptHandle": "AQEBbrHIzvIUWSotbmk9YF3fACNGJFdz7QucgqKJFcfSvjYGcxk9v7nW9njTxYnu/Na/A0pFORxzKmuRGrSQROS/Y4l3UEn+9sXV1Fhe50KgpIg2l7fV4WiqDasnd1g9HLD5hUD5dXnW4CdxQWPZGjdJ2Plh4F6hnRWFhz4EyCHKz5V/u/1+cQHyq60OoT+HdytnMU8uZ8+OTXAhb7aN8Ygvh2Hhmt5LL9/F2EK3oQSQEcrJ9P1jNRioGga5lYbPrKkcePmHwBxGX0bPZPf37igkycjcB3KYIKf3lsSJ2NvDzMKQVAuUsW4erY9OZfofIcXsbx3n5+g6d0ewKBrhTZze3WxhI220XIRmI7oDQlw1pKZz/c/lYVD4T8hTZW8dJVzSw0YnDmcDcxEFYi15uuzQOg==",
+      "body": "{\"price\":\"1206\",\"title\":\"Guitar 53\",\"description\":\"Guitar 53 description\",\"count\":\"3\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1606148822215",
+        "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
+        "ApproximateFirstReceiveTimestamp": "1606148822216"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "85c0010d0f00907679c2936ca28f7573",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "messageId": "3601c7b3-11e2-4a2e-bbd9-3668e7d1a293",
+      "receiptHandle": "AQEBdu5psma0qjWsry/n8PE/wzjI1xn85ZRuisqt5BxL3vhNi1TagwyKwqy9nYr/z4+Dc60a4C0XSUUA/DtVPnXZrzsqIYztqNHCph+F4j/ACLBhtrwg66GZTJG1xEN6nc/xflGpgswUlKJRNrZCSZYnTH3R9rKxwkmemNAxm6P7mg/XvGYHYFeyj0KRjY0gbydVbZg1cT2J6yj6nJT/jA0ITWIxzjMtUZJ9Apfx8QGi6jnV2MVB8yRa51FkoRyaaFt6hLY9agorNeYHzZ7+R3k1FT0XGZn+Ib8I0wypiNM7k60RQ/1H6DtuAOgtpJJLYktxY9vtlFjx8sWO0SUWCzf4LOBr0lax+/jiNLH+nztDIK3QvhmovMKY4OZwaJQThEV0MfhSOI8QW5enz/cXd8wL8A==",
+      "body": "{\"price\":\"44000\",\"title\":\"Guitar 42\",\"description\":\"Guitar 42 description\",\"count\":\"6\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1606148822192",
+        "SenderId": "AROA4U446DON3TIQVUH3F:import-service-dev-importFileParser",
+        "ApproximateFirstReceiveTimestamp": "1606148822197"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "6f9611f35a79874e827e7dd9c1bafd80",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:eu-west-1:869523135387:catalogItemsQueue",
+      "awsRegion": "eu-west-1"
+    }
+  ]
 }
-

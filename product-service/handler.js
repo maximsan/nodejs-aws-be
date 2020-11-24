@@ -1,1 +1,1 @@
-export * from './src/handlers'
+export * from './src/handlers';
