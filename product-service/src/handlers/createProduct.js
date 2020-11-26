@@ -1,6 +1,6 @@
 import { errorHandler } from '../../../shared/error';
-import { productSchema } from '../utils/product.validation.schema';
-import { validate } from '../utils/validate';
+import { productSchema } from '../utils/validation/product.validation.schema';
+import { validate } from '../utils/validation/validate';
 import { createResponse } from '../../../shared/createResponse';
 import { StatusCodes } from 'http-status-codes';
 import middy from '@middy/core';

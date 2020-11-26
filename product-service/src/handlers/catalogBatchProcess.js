@@ -7,8 +7,8 @@ import { StatusCodes } from 'http-status-codes';
 import { ProductRepository } from '../product.repository';
 import { ProductService } from '../product.service';
 import { SnsService } from '../sns.service';
-import { validate } from '../utils/validate';
-import { productSchema } from '../utils/product.validation.schema';
+import { validate } from '../utils/validation/validate';
+import { productSchema } from '../utils/validation/product.validation.schema';
 
 const ProductRepo = new ProductRepository();
 const ProductServ = new ProductService(ProductRepo);

@@ -1,19 +1,5 @@
-import { runDB } from './utils/db';
-
-const queries = {
-  createProduct: `insert into products (title, description, price)
-                    values ($1, $2, $3)
-                    returning id`,
-  getProducts: `select p.id, p.price, p.title, p.description, s.count
-                  from products as p
-                           join stocks as s on p.id = s.product_id`,
-  getProductById: `select p.id, p.price, p.title, p.description, s.count
-                     from products as p
-                              join stocks as s on p.id = s.product_id
-                     where p.id = $1`,
-  createStockNote: `insert into stocks (count, product_id)
-                      values ($1, $2)`,
-};
+import { runDB } from './db/db';
+import { queries } from './db/queries';
 
 export class ProductRepository {
   async getAll() {
@@ -59,6 +45,8 @@ export class ProductRepository {
       for (const product of products) {
         const { title, description, price, count } = product;
 
+        console.log('**********BEGIN**********');
+
         await db.query('BEGIN');
 
         const {
@@ -68,24 +56,23 @@ export class ProductRepository {
           values: [title, description, price],
         });
 
-        console.log('created product', product);
+        console.log('created product');
+        console.log(`**********${product}**********`);
 
-        console.log('+++++++count', count);
-        console.log('+++++++id', id);
         const result = await db.query({
           text: queries.createStockNote,
           values: [count, id],
         });
 
         console.log('added in stock');
-        console.log('///////////////', result);
+        console.log(`**********${result}**********`);
 
         await db.query('COMMIT');
 
-        console.log('///////////////COMMIT');
+        console.log('**********COMMIT**********');
       }
     } catch (error) {
-      console.log('///////////////ROLLBACK\\\\\\\\\\\\\\');
+      console.log('**********ROLLBACK**********');
       await db.query('ROLLBACK');
       return Promise.reject(error);
     } finally {
