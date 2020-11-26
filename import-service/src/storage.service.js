@@ -1,13 +1,8 @@
-import { S3 } from 'aws-sdk';
 import { BUCKET } from './config';
 
-const storageParams = {
-  region: 'eu-west-1',
-};
-
 export class StorageService {
-  constructor() {
-    this.storage = new S3(storageParams);
+  constructor({ s3 }) {
+    this.storage = s3;
   }
 
   get(key) {
@@ -17,6 +12,10 @@ export class StorageService {
     };
 
     return this.storage.getObject(bucketParams);
+  }
+
+  readStream(key) {
+    return this.get(key).createReadStream();
   }
 
   copy(from, to) {
@@ -41,15 +40,5 @@ export class StorageService {
   async moveFromTo(from, to) {
     await this.copy(from, to);
     await this.delete(from);
-  }
-
-  getUrl(filePath, operation = 'putObject') {
-    const bucketParams = {
-      Bucket: BUCKET,
-      Key: filePath,
-      ContentType: 'text/csv',
-    };
-
-    return this.storage.getSignedUrlPromise(operation, bucketParams);
   }
 }

@@ -4,25 +4,33 @@ import inputOutputLogger from '@middy/input-output-logger';
 import cors from '@middy/http-cors';
 import { createResponse } from '../../../shared/createResponse';
 import { errorHandler } from '../../../shared/error';
-import { StorageService } from '../storage.service';
+import { Token } from '../../DIContainer';
 
-const StorageServ = new StorageService();
+export const importProductsFileHandler = (container) => {
+  const s3 = container.resolve(Token.s3);
+  const config = container.resolve(Token.config);
 
-export const importProductsFile = middy(async (event) => {
-  const fileName = event?.queryStringParameters?.name;
-  if (!fileName) {
-    return createResponse(StatusCodes.BAD_REQUEST, 'name is required param');
-  }
+  return middy(async (event) => {
+    const fileName = event?.queryStringParameters?.name;
+    if (!fileName) {
+      return createResponse(StatusCodes.BAD_REQUEST, 'name is required param');
+    }
 
-  try {
-    const filePath = `uploaded/${fileName}`;
-    const signedUrl = await StorageServ.getUrl(filePath);
+    try {
+      const filePath = `uploaded/${fileName}`;
+      const bucketParams = {
+        Bucket: config.Bucket,
+        Key: filePath,
+        ContentType: 'text/csv',
+      };
+      const signedUrl = await s3.getSignedUrlPromise('putObject', bucketParams);
 
-    console.log(`signedUrl: ${signedUrl}`);
-    return createResponse(StatusCodes.OK, signedUrl);
-  } catch (error) {
-    return errorHandler(error);
-  }
-})
-  .use(cors())
-  .use(inputOutputLogger());
+      console.log(`signedUrl: ${signedUrl}`);
+      return createResponse(StatusCodes.OK, signedUrl);
+    } catch (error) {
+      return errorHandler(error);
+    }
+  })
+    .use(cors())
+    .use(inputOutputLogger());
+};

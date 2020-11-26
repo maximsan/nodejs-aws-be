@@ -1,14 +1,11 @@
-import { SQS } from 'aws-sdk';
-import { CATALOG_ITEMS_QUEUE_URL } from './config';
-
 export class QueueService {
-  constructor() {
-    this.queue = new SQS();
+  constructor({ SQS }) {
+    this.queue = SQS;
   }
 
-  sendMessage(message) {
+  sendMessage(url, message) {
     const queueParams = {
-      QueueUrl: CATALOG_ITEMS_QUEUE_URL,
+      QueueUrl: url,
       MessageBody: message,
     };
 

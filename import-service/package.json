@@ -29,6 +29,7 @@
   "dependencies": {
     "@middy/core": "^1.4.0",
     "@middy/http-cors": "^1.4.0",
+    "awilix": "^4.3.0",
     "csv-parser": "^2.3.3"
   }
 }
