@@ -1,24 +1,21 @@
-import {runDB} from "../utils/db";
-import {errorHandler} from "../../error/errorHandler";
-import {createResponse} from "../../error/createResponse";
-import middy from "@middy/core";
-import cors from "@middy/http-cors";
-import {StatusCodes} from "http-status-codes";
+import { errorHandler } from '../../../shared/error';
+import { createResponse } from '../../../shared/createResponse';
+import middy from '@middy/core';
+import cors from '@middy/http-cors';
+import { StatusCodes } from 'http-status-codes';
+import { ProductService } from '../product.service';
+import { ProductRepository } from '../product.repository';
 
-export const getProductsList = middy(async event => {
-    console.log(`event: ${JSON.stringify(event)}`);
+const ProductRepo = new ProductRepository();
+const ProductServ = new ProductService(ProductRepo);
 
-    const db = await runDB();
+export const getProductsList = middy(async (event) => {
+  console.log(`event: ${JSON.stringify(event)}`);
 
-    try {
-        const {rows: products} = await db.query(`select p.id, p.price, p.title, p.description, s.count
-                                                 from products as p
-                                                          join stocks as s on p.id = s.product_id`)
-        return createResponse(StatusCodes.OK, products);
-    } catch (error) {
-        console.error(`Error during db scripts executing - ${error}`);
-        return errorHandler(error);
-    } finally {
-        db.end();
-    }
-}).use(cors())
+  try {
+    const products = await ProductServ.getAll();
+    return createResponse(StatusCodes.OK, products);
+  } catch (error) {
+    return errorHandler(error);
+  }
+}).use(cors());

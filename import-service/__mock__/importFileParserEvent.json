@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "eu-west-1",
+      "eventTime": "2020-11-23T13:29:51.494Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AROA4U446DON3TIQVUH3F:import-service-dev-importProductsFile"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "80.94.229.194"
+      },
+      "responseElements": {
+        "x-amz-request-id": "1043D03DA8B2090D",
+        "x-amz-id-2": "74rAEu2pOesfVHk9P4kh75dlGBAyrzZz0hQWtL7CCWm14j5Epqp9MZkg1P3eoS+dJflzYeNgkOmqTPDsBR1qjBr7zuEoDZUq"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "import-service-dev-importFileParser-9eceafef0fe575eb52543c9070542d86",
+        "bucket": {
+          "name": "nodejs-aws-be-upload",
+          "ownerIdentity": {
+            "principalId": "A15DUHOWJ5LEFW"
+          },
+          "arn": "arn:aws:s3:::nodejs-aws-be-upload"
+        },
+        "object": {
+          "key": "uploaded/product-3.csv",
+          "size": 998,
+          "eTag": "d147b7fbb8b3bcc6e34f346d8b7adc77",
+          "sequencer": "005FBBB95058B0E13D"
+        }
+      }
+    }
+  ]
+}

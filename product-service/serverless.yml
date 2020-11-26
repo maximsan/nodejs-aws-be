@@ -14,6 +14,62 @@ provider:
     DB_DATABASE: ${env:DB_DATABASE}
     DB_USERNAME: ${env:DB_USERNAME}
     DB_PASSWORD: ${env:DB_PASSWORD}
+    CATALOG_ITEMS_ADD_SUBSCRIPTION:
+      Ref: CreateProductTopic
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "sns:*"
+      Resource:
+        Ref: CreateProductTopic
+
+resources:
+  Resources:
+    CatalogItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+    CreateProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    CreateProductSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: maximuzz@yandex.ru
+        FilterPolicy:
+          guitarPrice:
+            - numeric:
+                - ">"
+                - 0
+                - "<"
+                - 3000
+        Protocol: email
+        TopicArn:
+          Ref: CreateProductTopic
+    CreateProductSubscription2:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: xalpinistx@gmail.com
+        FilterPolicy:
+          guitarPrice:
+            - numeric:
+                - ">"
+                - 3000
+        Protocol: email
+        TopicArn:
+          Ref: CreateProductTopic
+  Outputs:
+    CatalogItemsQueueUrl:
+      Value:
+        Ref: CatalogItemsQueue
+      Export:
+        Name: ${self:service}-${self:provider.stage}-catalog-items-queue-url
+    CatalogItemsQueueArn:
+      Value:
+        Fn::GetAtt: [ CatalogItemsQueue, Arn ]
+      Export:
+        Name: ${self:service}-${self:provider.stage}-catalog-items-queue-arn
 
 plugins:
   - serverless-webpack
@@ -42,4 +98,10 @@ functions:
           path: products
           method: post
           cors: true
-
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt: [ CatalogItemsQueue, Arn]

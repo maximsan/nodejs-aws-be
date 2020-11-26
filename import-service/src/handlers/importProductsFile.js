@@ -1,33 +1,36 @@
-import {StatusCodes} from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 import middy from '@middy/core';
-import cors from "@middy/http-cors";
-import {createS3} from "./createS3";
-import {BUCKET} from "../config";
-import {createResponse} from "../../error/createResponse";
-import {errorHandler} from "../../error/errorHandler";
+import inputOutputLogger from '@middy/input-output-logger';
+import cors from '@middy/http-cors';
+import { createResponse } from '../../../shared/createResponse';
+import { errorHandler } from '../../../shared/error';
+import { Token } from '../../DIContainer';
 
-export const importProductsFile = middy(async (event) => {
-    console.log(`queryStringParameters: ${JSON.stringify(event.queryStringParameters)}`);
+export const importProductsFileHandler = (container) => {
+  const s3 = container.resolve(Token.s3);
+  const config = container.resolve(Token.config);
 
-    const fileName = event && event.queryStringParameters && event.queryStringParameters.name;
+  return middy(async (event) => {
+    const fileName = event?.queryStringParameters?.name;
     if (!fileName) {
-        return createResponse(StatusCodes.BAD_REQUEST, 'name is required param')
-    }
-
-    const filePath = `uploaded/${fileName}`;
-
-    const bucketParams = {
-        Bucket: BUCKET,
-        Key: filePath,
-        ContentType: 'text/csv'
+      return createResponse(StatusCodes.BAD_REQUEST, 'name is required param');
     }
 
     try {
-        const signedUrl = await createS3().getSignedUrlPromise('putObject', bucketParams);
+      const filePath = `uploaded/${fileName}`;
+      const bucketParams = {
+        Bucket: config.Bucket,
+        Key: filePath,
+        ContentType: 'text/csv',
+      };
+      const signedUrl = await s3.getSignedUrlPromise('putObject', bucketParams);
 
-        console.log(`signedUrl: ${signedUrl}`);
-        return createResponse(StatusCodes.OK, signedUrl);
+      console.log(`signedUrl: ${signedUrl}`);
+      return createResponse(StatusCodes.OK, signedUrl);
     } catch (error) {
-        return errorHandler(error)
+      return errorHandler(error);
     }
-}).use(cors())
+  })
+    .use(cors())
+    .use(inputOutputLogger());
+};

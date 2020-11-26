@@ -1,68 +1,64 @@
 import middy from '@middy/core';
-import {createS3} from "./createS3";
+import inputOutputLogger from '@middy/input-output-logger';
 import csv from 'csv-parser';
-import {BUCKET} from "../config";
-import {StatusCodes} from "http-status-codes";
-import {promisify} from 'util'
-import {pipeline, Writable} from 'stream'
-import {createResponse} from "../../error/createResponse";
-import {errorHandler} from "../../error/errorHandler";
+import { Token } from '../../DIContainer';
+import { StatusCodes } from 'http-status-codes';
+import { promisify } from 'util';
+import { pipeline, Writable } from 'stream';
+import { createResponse } from '../../../shared/createResponse';
+import { errorHandler } from '../../../shared/error';
 
 const promisifiedPipeline = promisify(pipeline);
 
-export const importFileParser = middy(async (event) => {
-    const s3 = createS3();
+export const importFileParserHandler = (container) => {
+  const storageService = container.resolve(Token.storageService);
+  const queueService = container.resolve(Token.queueService);
+  const config = container.resolve(Token.config);
 
-    console.log(`event: ${JSON.stringify(event)}`);
-
-    if (!(event && event.Records && event.Records.length)) {
-        return createResponse(StatusCodes.NOT_FOUND, 'data is empty')
+  return middy(async (event) => {
+    if (!event?.Records?.length) {
+      return createResponse(StatusCodes.NOT_FOUND, 'data is empty');
     }
 
     try {
-        for (const record of event.Records) {
-            const Key = record.s3.object.key;
-            const bucketParams = {
-                Bucket: BUCKET,
-                Key,
-            }
+      for (const record of event.Records) {
+        console.log(`event record ${JSON.stringify(record)}`);
 
-            const stream = s3.getObject(bucketParams).createReadStream()
+        const key = record.s3.object.key;
 
-            const writableStream = new Writable({
-                objectMode: true,
-                write(record, _, callback) {
-                    console.log(`record: ${JSON.stringify(record)}`)
-                    callback();
-                },
-                async final(callback) {
-                    console.log(`Copy from ${BUCKET}/${Key}`)
-                    const newKey = Key.replace('uploaded', 'parsed');
+        const stream = storageService.readStream(key);
+        const messages = [];
 
-                    await s3.copyObject({
-                        ...bucketParams,
-                        CopySource: `${BUCKET}/${Key}`,
-                        Key: newKey
-                    }).promise()
+        const writableStream = new Writable({
+          objectMode: true,
+          async write(product, _, callback) {
+            const strProduct = JSON.stringify(product);
 
-                    await s3.deleteObject({
-                        Bucket: BUCKET,
-                        Key
-                    }).promise()
+            console.log(`record: ${strProduct}`);
 
-                    console.log(`Copy to ${BUCKET}/${newKey}`);
+            messages.push(queueService.sendMessage(config.QueueUrl, strProduct));
 
-                    callback(null);
-                }
-            })
+            callback();
+          },
+          async final(callback) {
+            console.log(`Copy from ${config.Bucket}/${key}`);
 
-            await promisifiedPipeline(
-                stream,
-                csv(),
-                writableStream
-            )
-        }
+            const newKey = key.replace('uploaded', 'parsed');
+
+            await storageService.moveFromTo(key, newKey);
+
+            console.log(`Copy to ${config.Bucket}/${newKey}`);
+
+            await Promise.all(messages);
+
+            callback(null);
+          },
+        });
+
+        await promisifiedPipeline(stream, csv(), writableStream);
+      }
     } catch (error) {
-        return errorHandler(error)
+      return errorHandler(error);
     }
-})
+  }).use(inputOutputLogger());
+};

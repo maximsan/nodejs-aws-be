@@ -10,18 +10,25 @@
 ### Scripts
 
 #### local lambda testing
+
 ```sh
     yarn local
 ```
+
 #### deploy full service
+
 ```sh
     yarn deploy
 ```
+
 #### deploy only lambda
+
 ```sh
     yarn deploy:f <function-name>
 ```
+
 #### run all test
+
 ```sh
     yarn test
 ```
