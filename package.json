@@ -28,7 +28,7 @@
         "test": "jest",
         "test:import-service": "jest --testMatch \"<rootDir>/import-service/src/handlers/*.test.js\"",
         "test:product-service": "jest --testMatch \"<rootDir>/product-service/src/handlers/*.test.js\"",
-        "format": "prettier --write \"(product-service|import-service|shared)/**/*.+(js|jsx|json|css|md)\"",
+        "format": "prettier --write \"(*-service|shared)/**/*.+(js|jsx|json|css|md)\"",
         "lint": "eslint --ext .js",
         "lint:fix": "eslint --fix --ext .js",
         "postinstall": "husky install && cd product-service && npm install && cd ../import-service && npm install",
