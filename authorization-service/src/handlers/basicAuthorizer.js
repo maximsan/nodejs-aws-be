@@ -1,58 +1,42 @@
-import { createResponse } from '../../../shared/createResponse';
-import { StatusCodes } from 'http-status-codes';
-import middy from '@middy/core';
-import inputOutputLogger from '@middy/input-output-logger';
+/* eslint-disable node/no-callback-literal */
+
+import { Token } from '../../DIContainer';
 
 export const basicAuthorizerHandler = (container) => {
-  return middy((event, ctx, cb) => {
-    const { headers } = event;
+  const encoderService = container.resolve(Token.encoderService);
+  const authorizerService = container.resolve(Token.authorizerService);
+  const policyService = container.resolve(Token.policyService);
 
-    const authorization = headers.Authorization;
-
-    if (!authorization) {
-      // cb('Unauthorized');
-      return createResponse(StatusCodes.UNAUTHORIZED);
-    }
-
+  return (event, ctx, cb) => {
     if (event.type !== 'TOKEN') {
-      return createResponse(StatusCodes.UNAUTHORIZED);
+      console.log('event.type', event.type);
+
+      throw new Error('Unauthorized');
     }
 
     try {
-      const token = event.authorizationToken;
+      console.log('token', event.authorizationToken);
 
-      if (token.indexOf('Basic') === -1) {
-        console.log('invalid token', token);
-        return createResponse(StatusCodes.FORBIDDEN);
+      const [basic, personalDataEncoded] = event.authorizationToken.split(' ');
+
+      if (basic.indexOf('Basic') === -1) {
+        throw new Error('Error: Invalid token');
       }
 
-      const tokenPartEncoded = token.split(' ')[1];
-      const buff = Buffer.from(tokenPartEncoded, 'base-64');
-      const personalData = buff.toString('utf-8').split(':');
-      const login = personalData[0];
-      const password = personalData[1];
+      console.log('personalDataEncoded', personalDataEncoded);
 
-      const storedPassword = process.env[login];
+      const [login, password] = encoderService.decode(personalDataEncoded).split(':');
 
-      const action = !storedPassword || storedPassword !== password ? 'Deny' : 'Allow';
+      const isAuthorized = authorizerService.isAuthorized(login, password);
 
-      const policy = {
-        principalId: tokenPartEncoded,
-        policyDocument: {
-          Version: '2012-10-17',
-          Statement: [
-            {
-              Action: 'execute-api:Invoke',
-              Effect: action,
-              Resource: event.methodArn,
-            },
-          ],
-        },
-      };
+      const policy = policyService.generatePolicy(personalDataEncoded, isAuthorized, event.methodArn);
+
+      console.log('policy', policy);
 
       cb(null, policy);
     } catch (error) {
-      cb(`Unauthorized: ${error.message}`);
+      console.log(`error ${error.error}`);
+      throw new Error('Unauthorized');
     }
-  }).use(inputOutputLogger());
+  };
 };

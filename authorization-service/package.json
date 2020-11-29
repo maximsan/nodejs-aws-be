@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "Serverless webpack example using ecma script",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "local": "sls offline",
+    "deploy": "sls deploy",
+    "deploy:f": "sls deploy -f",
+    "test": "jest",
+    "invoke:local": "sls invoke local",
+    "invoke:local:basicAuthorizer": "yarn invoke:local -f basicAuthorizer",
+    "invoke:local:basicAuthorizer:allow": "yarn invoke:local:basicAuthorizer -p __mock__/basicAuthorizerEventAllow.json",
+    "invoke:local:basicAuthorizer:deny": "yarn invoke:local:basicAuthorizer -p __mock__/basicAuthorizerEventDeny.json"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
