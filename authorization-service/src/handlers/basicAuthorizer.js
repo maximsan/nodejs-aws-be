@@ -8,6 +8,8 @@ export const basicAuthorizerHandler = (container) => {
   const policyService = container.resolve(Token.policyService);
 
   return (event, ctx, cb) => {
+    console.log('event', event);
+
     if (event.type !== 'TOKEN') {
       console.log('event.type', event.type);
 
