@@ -28,6 +28,27 @@ provider:
 #        - ${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}
         Fn::ImportValue: product-service-dev-catalog-items-queue-arn
 
+resources:
+  Resources:
+    GatewayResponseAccessDenied:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: ACCESS_DENIED
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    GatewayResponseUnauthorized:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId: !Ref ApiGatewayRestApi
+
+
 plugins:
   - serverless-webpack
   - serverless-dotenv-plugin
@@ -40,6 +61,20 @@ functions:
           path: import
           method: get
           cors: true
+          authorizer:
+            arn:
+              Fn::ImportValue: BasicAuthorizerArn
+#            arn:
+#              !Join
+#              - ':'
+#              - - 'arn:aws:lambda'
+#                - !Ref AWS::Region
+#                - !Ref AWS::AccountId
+#                - 'function:authorization-service-dev-basicAuthorizer'
+#            arn: ${cf:authorization-service-${self:provider.stage}.BasicAuthorizerArn}
+            name: basicAuthorizer
+            identitySource: method.request.header.Authorization
+            type: token
           request:
             parameters:
               querystrings:

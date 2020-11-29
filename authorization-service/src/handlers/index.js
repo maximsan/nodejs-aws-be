@@ -1,7 +1,7 @@
-import { setup, container } from '../../DIContainer';
+// import { setup, container } from '../../DIContainer';
 
 import { basicAuthorizerHandler } from './basicAuthorizer';
 
-setup();
+// setup();
 
-export const basicAuthorizer = basicAuthorizerHandler(container);
+export const basicAuthorizer = basicAuthorizerHandler();
