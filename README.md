@@ -3,6 +3,8 @@
 
 ### second service - **import-service**
 
+### third service - **authorization-service**
+
 #### AWS services
 * Lambdas
 * Cloudformation
