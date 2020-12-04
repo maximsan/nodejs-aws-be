@@ -11,3 +11,4 @@
 * RDS
 * SNS
 * SQS
+* Lambda Authorizer
