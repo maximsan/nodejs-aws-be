@@ -1,0 +1,5 @@
+{
+  "type": "TOKEN",
+  "methodArn": "arn:aws:execute-api:eu-west-1:869523135387:df7vxneznf/ESTestInvoke-stage/GET/",
+  "authorizationToken": "Basic WF4aW1zYW46VEVTVF9QQVNTV09SRA=="
+}
