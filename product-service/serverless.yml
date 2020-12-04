@@ -84,6 +84,11 @@ functions:
           path: products
           method: get
           cors: true
+          authorizer:
+            name: CognitoAuthorizer
+            type: COGNITO_USER_POOLS
+            arn: arn:aws:cognito-idp:eu-west-1:869523135387:userpool/eu-west-1_IndnHl2uU
+            identitySource: method.request.header.Authorization
   getProductById:
     handler: handler.getProductById
     events:
