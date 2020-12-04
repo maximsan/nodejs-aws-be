@@ -17,41 +17,41 @@ custom:
   userPoolClientName: authorization-service-cognito-pool-client-${self:provider.stage}
 
 resources:
-  Resources:
-    CognitoUserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        MfaConfiguration: OFF
-        UserPoolName: ${self:custom.userPoolName}
-        UsernameAttributes:
-          - email
-        Policies:
-          PasswordPolicy:
-            MinimumLength: 6
-            RequireLowercase: False
-            RequireNumbers: False
-            RequireSymbols: False
-            RequireUppercase: False
-    CognitoUserPoolClient:
-      Type: AWS::Cognito::UserPoolClient
-      Properties:
-        ClientName: ${self:custom.userPoolClientName}
-        GenerateSecret: False
-        CallbackURLs:
-          - http://localhost:3000
-          - http://localhost:3001
-          - https://dg2e8nno6k0ty.cloudfront.net/
-        AllowedOAuthFlows:
-          - code
-          - implicit
-        AllowedOAuthScopes:
-          - phone
-          - email
-          - openid
-          - profile
-          - aws.cognito.signin.user.admin
-        UserPoolId:
-          Ref: CognitoUserPool
+#  Resources:
+#    CognitoUserPool:
+#      Type: AWS::Cognito::UserPool
+#      Properties:
+#        MfaConfiguration: OFF
+#        UserPoolName: ${self:custom.userPoolName}
+#        UsernameAttributes:
+#          - email
+#        Policies:
+#          PasswordPolicy:
+#            MinimumLength: 6
+#            RequireLowercase: False
+#            RequireNumbers: False
+#            RequireSymbols: False
+#            RequireUppercase: False
+#    CognitoUserPoolClient:
+#      Type: AWS::Cognito::UserPoolClient
+#      Properties:
+#        ClientName: ${self:custom.userPoolClientName}
+#        GenerateSecret: False
+#        CallbackURLs:
+#          - http://localhost:3000
+#          - http://localhost:3001
+#          - https://dg2e8nno6k0ty.cloudfront.net/
+#        AllowedOAuthFlows:
+#          - code
+#          - implicit
+#        AllowedOAuthScopes:
+#          - phone
+#          - email
+#          - openid
+#          - profile
+#          - aws.cognito.signin.user.admin
+#        UserPoolId:
+#          Ref: CognitoUserPool
 
   Outputs:
     BasicAuthorizerArn:
