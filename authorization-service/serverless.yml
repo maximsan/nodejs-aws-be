@@ -60,12 +60,6 @@ resources:
         - Arn
       Export:
         Name: BasicAuthorizerArn
-#    CognitoAuthorizerArn:
-#      Value: !GetAtt
-#        - CognitoAuthorizerLambdaFunction
-#        - Arn
-#      Export:
-#        Name: CognitoAuthorizerArn
 
 functions:
   basicAuthorizer:
