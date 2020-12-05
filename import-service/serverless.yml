@@ -101,7 +101,7 @@ functions:
     handler: handler.importFileParser
     events:
       - s3:
-          bucket: nodejs-aws-be-upload
+          bucket: nodejs-aws-be-maximsan-upload
           event: s3:ObjectCreated:*
           rules:
             - prefix: uploaded/
