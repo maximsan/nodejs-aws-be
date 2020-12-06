@@ -7,6 +7,7 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-1
+  profile: xalpinistx
 
   environment:
     CATALOG_ITEMS_QUEUE_URL:
@@ -17,16 +18,26 @@ provider:
     - Effect: 'Allow'
       Action: 's3:ListBucket'
       Resource:
-        - 'arn:aws:s3:::nodejs-aws-be-upload'
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:custom.s3BucketName}
     - Effect: 'Allow'
       Action: 's3:*'
       Resource:
-        - 'arn:aws:s3:::nodejs-aws-be-upload/*'
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:custom.s3BucketName}
+            - "/*"
     - Effect: 'Allow'
       Action: 'sqs:*'
       Resource:
 #        - ${cf:product-service-${self:provider.stage}.CatalogItemsQueueArn}
         Fn::ImportValue: product-service-dev-catalog-items-queue-arn
+
+custom:
+  s3BucketName: nodejs-aws-be-maximsan-upload
 
 resources:
   Resources:
@@ -64,8 +75,6 @@ resources:
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
 
-
-
 plugins:
   - serverless-webpack
   - serverless-dotenv-plugin
@@ -100,7 +109,7 @@ functions:
     handler: handler.importFileParser
     events:
       - s3:
-          bucket: nodejs-aws-be-upload
+          bucket: ${self:custom.s3BucketName}
           event: s3:ObjectCreated:*
           rules:
             - prefix: uploaded/
