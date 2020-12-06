@@ -32,8 +32,9 @@
         "format": "prettier --write \"(*-service|shared)/**/*.+(js|jsx|json|css|md)\"",
         "lint": "eslint --ext .js",
         "lint:fix": "eslint --fix --ext .js",
-        "postinstall": "husky install && cd product-service && npm install && cd ../import-service && npm install",
-        "test:lint": "npm run test && npm run lint"
+        "postinstall": "husky i && cd product-service && npm i && cd ../import-service && npm i && cd ../authorization-service && npm i",
+        "test:lint": "npm run test && npm run lint",
+        "clean": "rm -rf node_modules && cd product-service && rm -rf node_modules && cd ../import-service && rm -rf node_modules && cd ../authorization-service && rm -rf node_modules"
     },
     "husky": {
         "hooks": {
