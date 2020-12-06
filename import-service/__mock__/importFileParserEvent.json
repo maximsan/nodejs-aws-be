@@ -20,14 +20,14 @@
         "s3SchemaVersion": "1.0",
         "configurationId": "import-service-dev-importFileParser-9eceafef0fe575eb52543c9070542d86",
         "bucket": {
-          "name": "nodejs-aws-be-upload",
+          "name": "nodejs-aws-be-maximsan-upload",
           "ownerIdentity": {
             "principalId": "A15DUHOWJ5LEFW"
           },
-          "arn": "arn:aws:s3:::nodejs-aws-be-upload"
+          "arn": "arn:aws:s3:::nodejs-aws-be-maximsan-upload"
         },
         "object": {
-          "key": "uploaded/product-3.csv",
+          "key": "uploaded/1.csv",
           "size": 998,
           "eTag": "d147b7fbb8b3bcc6e34f346d8b7adc77",
           "sequencer": "005FBBB95058B0E13D"
