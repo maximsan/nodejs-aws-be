@@ -6,20 +6,23 @@ const cartService = new CartService();
 
 router.route('*').all(
   asyncMiddleware(async (req, res) => {
-    console.log(req);
-    console.log(req.method);
-    console.log(req.originalUrl);
+    console.log('cart');
+    console.log('method', req.method);
+    console.log('originalUrl', req.originalUrl);
+    const { method, originalUrl, body = {} } = req;
 
-    const serviceUrl = process.env.carts;
+    const serviceUrl = process.env.cart;
     const config = {
-      method: req.method,
-      url: `${serviceUrl}${req.originalUrl}`,
-      data: Object.keys(req.body || {}).length && req.body,
+      method,
+      url: `${serviceUrl}${originalUrl}`,
+      ...(Object.keys(body).length && { data: body }),
     };
 
     console.log('config', config);
 
-    return await cartService.resolve(config);
+    const result = await cartService.resolve(config);
+
+    res.send(result);
   }),
 );
 

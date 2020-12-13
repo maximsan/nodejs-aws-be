@@ -9,11 +9,12 @@ router.route('/').get(
     console.log('products');
     console.log('method', req.method);
     console.log('originalUrl', req.originalUrl);
+    const { method, originalUrl } = req;
 
     const serviceUrl = process.env.products;
     const config = {
-      method: req.method,
-      url: `${serviceUrl}${req.originalUrl}`,
+      method,
+      url: `${serviceUrl}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -29,11 +30,12 @@ router.route('/:id').get(
     console.log('products');
     console.log('method', req.method);
     console.log('originalUrl', req.originalUrl);
+    const { method, originalUrl } = req;
 
     const serviceUrl = process.env.products;
     const config = {
-      method: req.method,
-      url: `${serviceUrl}${req.originalUrl}`,
+      method,
+      url: `${serviceUrl}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -49,12 +51,13 @@ router.route('/').post(
     console.log('method', req.method);
     console.log('originalUrl', req.originalUrl);
     console.log('body', req.body);
+    const { method, originalUrl, body = {} } = req;
 
     const serviceUrl = process.env.products;
     const config = {
-      method: req.method,
-      url: `${serviceUrl}${req.originalUrl}`,
-      data: Object.keys(req.body).length && req.body,
+      method,
+      url: `${serviceUrl}${originalUrl}`,
+      ...(Object.keys(body).length && { data: body }),
     };
 
     const response = await productService.resolveProduct(config);
