@@ -3,7 +3,6 @@ const asyncMiddleware = require('../../common/asyncErrorMiddleware');
 const { CacheKey } = require('../cache.service');
 const { CacheService } = require('../cache.service');
 const { ProductService } = require('./product.service');
-const { productsUrl } = require('../../config');
 
 const productService = new ProductService();
 const cacheService = new CacheService({});
@@ -17,7 +16,7 @@ router.route('/').get(
 
     const config = {
       method,
-      url: `${productsUrl}${originalUrl}`,
+      url: `${process.env.products}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -45,7 +44,7 @@ router.route('/:id').get(
 
     const config = {
       method,
-      url: `${productsUrl}${originalUrl}`,
+      url: `${process.env.products}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -65,7 +64,7 @@ router.route('/').post(
 
     const config = {
       method,
-      url: `${productsUrl}${originalUrl}`,
+      url: `${process.env.products}${originalUrl}`,
       ...(Object.keys(body).length && { data: body }),
     };
 
