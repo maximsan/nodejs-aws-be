@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const asyncMiddleware = require('../../common/asyncErrorMiddleware');
 const { ProductService } = require('./product.service');
+const { productsUrl } = require('../../config');
 
 const productService = new ProductService();
 
@@ -11,10 +12,9 @@ router.route('/').get(
     console.log('originalUrl', req.originalUrl);
     const { method, originalUrl } = req;
 
-    const serviceUrl = process.env.products;
     const config = {
       method,
-      url: `${serviceUrl}${originalUrl}`,
+      url: `${productsUrl}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -32,10 +32,9 @@ router.route('/:id').get(
     console.log('originalUrl', req.originalUrl);
     const { method, originalUrl } = req;
 
-    const serviceUrl = process.env.products;
     const config = {
       method,
-      url: `${serviceUrl}${originalUrl}`,
+      url: `${productsUrl}${originalUrl}`,
     };
 
     console.log('config', config);
@@ -53,10 +52,9 @@ router.route('/').post(
     console.log('body', req.body);
     const { method, originalUrl, body = {} } = req;
 
-    const serviceUrl = process.env.products;
     const config = {
       method,
-      url: `${serviceUrl}${originalUrl}`,
+      url: `${productsUrl}${originalUrl}`,
       ...(Object.keys(body).length && { data: body }),
     };
 

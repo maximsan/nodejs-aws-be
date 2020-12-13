@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const asyncMiddleware = require('../../common/asyncErrorMiddleware');
+const { cartUrl } = require('../../config');
 const { CartService } = require('./cart.service');
 
 const cartService = new CartService();
@@ -11,10 +12,9 @@ router.route('*').all(
     console.log('originalUrl', req.originalUrl);
     const { method, originalUrl, body = {} } = req;
 
-    const serviceUrl = process.env.cart;
     const config = {
       method,
-      url: `${serviceUrl}${originalUrl}`,
+      url: `${cartUrl}${originalUrl}`,
       ...(Object.keys(body).length && { data: body }),
     };
 

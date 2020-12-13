@@ -6,7 +6,7 @@ dotenv.config({
 });
 
 module.exports = {
-  PORT: process.env.port,
-  products: process.env.products,
-  carts: process.env.carts,
+  PORT: process.env.port || 4000,
+  productsUrl: process.env.products,
+  cartUrl: process.env.cart,
 };
