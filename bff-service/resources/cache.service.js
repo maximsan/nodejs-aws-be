@@ -5,7 +5,7 @@ const CacheKey = {
 };
 
 class CacheService {
-  constructor({ exp = 120 }) {
+  constructor({ exp = 7200 }) {
     this.exp = exp;
   }
 
