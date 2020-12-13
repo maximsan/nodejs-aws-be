@@ -1,9 +1,12 @@
 const router = require('express').Router();
 const asyncMiddleware = require('../../common/asyncErrorMiddleware');
+const { CacheKey } = require('../cache.service');
+const { CacheService } = require('../cache.service');
 const { ProductService } = require('./product.service');
 const { productsUrl } = require('../../config');
 
 const productService = new ProductService();
+const cacheService = new CacheService({});
 
 router.route('/').get(
   asyncMiddleware(async (req, res) => {
@@ -19,7 +22,15 @@ router.route('/').get(
 
     console.log('config', config);
 
-    const products = await productService.resolveProducts(config);
+    let products;
+    const cachedProducts = cacheService.get(CacheKey.PRODUCTS);
+    if (cachedProducts) {
+      products = cachedProducts;
+    } else {
+      const resolvedProducts = await productService.resolveProducts(config);
+      cacheService.set(CacheKey.PRODUCTS, resolvedProducts);
+      products = resolvedProducts;
+    }
 
     res.send(products);
   }),
