@@ -1,0 +1,27 @@
+{
+  "name": "bff-service",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node server.js",
+    "start:dev": "nodemon server.js",
+    "debug": "nodemon --inspect server.js",
+    "eb:init": "eb init -p node.js -r eu-west-1 --profile xalpinistx",
+    "eb:create": "eb create develop -s -c maximsan-bff-develop",
+    "eb:deploy": "eb deploy",
+    "eb:terminate": "eb terminate"
+  },
+  "keywords": [],
+  "author": "Maxim Shchutsky <maximuzz@yandex.ru> (https://maximsan.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.21.0",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "helmet": "4.2.0",
+    "http-status-codes": "2.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.6"
+  }
+}

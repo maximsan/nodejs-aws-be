@@ -40,6 +40,6 @@ describe('importProductsFile', () => {
           expect(result.statusCode).toBe(400);
           expect(result.body).toBe('name is required param');
         });
-    }
+    },
   );
 });
