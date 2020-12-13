@@ -5,27 +5,40 @@ const CacheKey = {
 };
 
 class CacheService {
-  constructor({ exp = 120 }) {
+  constructor({ exp = 120000 }) {
     this.exp = exp;
   }
 
   get(key) {
     if (inMemoryCache[key]) {
-      return inMemoryCache[key];
+      return inMemoryCache[key].value;
     }
     return null;
   }
 
   set(key, value) {
     if (!inMemoryCache[key]) {
-      inMemoryCache[key] = value;
-      this.cacheId = setTimeout(() => this.invalidate(key), this.exp);
+      let exp = null;
+      if (this.exp && this.exp > 0) {
+        console.log('exp', exp);
+        exp = setTimeout(() => {
+          this.invalidate(key);
+        }, this.exp);
+      }
+      inMemoryCache[key] = {
+        value,
+        exp,
+      };
     }
   }
 
   invalidate(key) {
-    inMemoryCache[key] = null;
-    clearTimeout(this.cacheId);
+    if (inMemoryCache[key]) {
+      if (inMemoryCache[key].exp) {
+        clearTimeout(inMemoryCache[key].exp);
+      }
+      delete inMemoryCache[key];
+    }
   }
 }
 
